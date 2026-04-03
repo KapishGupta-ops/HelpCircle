@@ -7,6 +7,7 @@ HelpCircle is a hyperlocal Reddit-style help network designed for small neighbor
 - **Backend**: Node.js, Express.js, MongoDB (Mongoose)
 - **Auth**: JWT-based authentication
 - **Maps**: Google Maps API for location-based features
+- **Media Storage**: Cloudinary (address proof/image uploads)
 
 ## Features
 - **JWT Auth**: Secure user registration and login.
@@ -62,8 +63,16 @@ helpcircle/
 ### Backend
 1. Navigate to the `backend` directory: `cd helpcircle/backend`
 2. Install dependencies: `npm install`
-3. Configure your `.env` file (set `MONGO_URI` and `JWT_SECRET`).
+3. Configure your `.env` file (set `MONGO_URI`, `JWT_SECRET`, `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET`).
 4. Start the server: `npm run start` or `npm run dev` (for nodemon).
+
+### Cloudinary Setup
+1. Create a Cloudinary account and copy your Cloud Name, API Key, and API Secret from the dashboard.
+2. Add the following values in `backend/.env`:
+  - `CLOUDINARY_CLOUD_NAME`
+  - `CLOUDINARY_API_KEY`
+  - `CLOUDINARY_API_SECRET`
+  - Optional: `CLOUDINARY_FOLDER` (default: `helpcircle`)
 
 ### Frontend
 1. Open `frontend/index.html` in your browser.
