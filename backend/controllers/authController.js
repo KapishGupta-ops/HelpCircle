@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const Post = require('../models/Post');
 const Notification = require('../models/Notification');
+const { hasCloudinaryConfig, uploadBufferToCloudinary } = require('../config/cloudinary');
 
 const ALLOWED_HELP_CATEGORIES = ['Notes', 'Charger', 'Bike Repair', 'Groceries', 'Ride', 'Medical', 'Other'];
 const DEFAULT_RECOMMENDATION_WEIGHTS = {
@@ -48,6 +49,21 @@ const registerUser = async (req, res) => {
   } = req.body;
 
   try {
+    let addressProofUrl = null;
+    if (req.file) {
+      if (!hasCloudinaryConfig()) {
+        return res.status(500).json({
+          message: 'Cloudinary is not configured. Please set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET.',
+        });
+      }
+
+      const uploadResult = await uploadBufferToCloudinary(req.file.buffer, {
+        folder: `${process.env.CLOUDINARY_FOLDER || 'helpcircle'}/address-proofs`,
+      });
+
+      addressProofUrl = uploadResult.secure_url;
+    }
+
     const userExists = await User.findOne({ email });
 
     if (userExists) {
@@ -71,7 +87,7 @@ const registerUser = async (req, res) => {
       pincode,
       lat,
       lng,
-      addressProofUrl: req.file ? `/uploads/${req.file.filename}` : null,
+      addressProofUrl,
       addressVerified: 'pending',
       karma: 0
     });
