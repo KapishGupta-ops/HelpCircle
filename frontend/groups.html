@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <title>Neighborhood Groups - HelpCircle</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        // Immediate theme sync to prevent flicker
+        (function() {
+            const savedTheme = localStorage.getItem('hc_theme') || 'light';
+            if (savedTheme === 'dark') document.documentElement.classList.add('dark');
+        })();
+    </script>
+    <style>
+        /* Optimization for dark mode contrast */
+        html.dark body {
+            background-color: #020617 !important;
+        }
+        html.dark .text-main {
+            color: #f8fafc !important;
+        }
+        html.dark .text-secondary {
+            color: #cbd5e1 !important;
+        }
+        html.dark .bg-elevated {
+            background-color: #0f172a !important;
+            border-color: #1e293b !important;
+        }
+        html.dark .bg-secondary {
+            background-color: #1e293b !important;
+        }
+    </style>
+</head>
+<body class="pb-24 transition-colors duration-300">
+    <!-- Navbar -->
+    <nav class="glass sticky top-0 z-50 px-4 py-4 border-b border-slate-200/50 dark:border-slate-800/50">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <a href="index.html" class="flex items-center gap-2">
+                    <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg shadow-orange-200 dark:shadow-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 21l-8.228-9.96a5 5 0 117.228-6.904 5 5 0 117.228 6.904L12 21z" />
+                        </svg>
+                    </div>
+                    <h1 class="brand-text text-2xl font-extrabold tracking-tight text-main">Help<span class="text-orange-600">Circle</span></h1>
+                </a>
+            </div>
+            
+            <div class="top-nav-tabs hidden md:flex items-center gap-1 bg-slate-100/50 dark:bg-slate-800/50 p-1 rounded-2xl border border-slate-200/50 dark:border-slate-700/50">
+                <a href="index.html" class="top-nav-link px-4 py-2 rounded-xl text-sm font-bold transition-all text-secondary hover:text-primary-600">Explore</a>
+                <a href="groups.html" class="top-nav-link active px-4 py-2 rounded-xl text-sm font-bold transition-all bg-white dark:bg-slate-700 text-primary-600 shadow-sm">Groups</a>
+                <a href="leaderboard.html" class="top-nav-link px-4 py-2 rounded-xl text-sm font-bold transition-all text-secondary hover:text-primary-600">Leaderboard</a>
+                <a href="profile.html" class="top-nav-link px-4 py-2 rounded-xl text-sm font-bold transition-all text-secondary hover:text-primary-600">Profile</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <div class="hidden sm:flex flex-col items-end mr-1">
+                    <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Local Karma</span>
+                    <span id="userKarmaDisplay" class="text-sm font-extrabold text-orange-600">...</span>
+                </div>
+                <div class="notification-wrap">
+                    <button id="notificationBtn" class="notification-btn" title="Notifications">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                        <span id="notificationBadge" class="notification-badge hidden">0</span>
+                    </button>
+                    <div id="notificationPanel" class="notification-panel hidden">
+                        <div class="notification-panel-header">
+                            <h4>Notifications</h4>
+                            <button id="notificationMarkAll" class="notification-mark-all">Mark all read</button>
+                        </div>
+                        <div id="notificationList" class="notification-list"></div>
+                    </div>
+                </div>
+                <button id="themeToggle" class="theme-toggle" title="Toggle dark mode">
+                    <svg class="theme-toggle-icon sun" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1m-16 0H1m15.364 1.636l.707.707M6.343 6.343l-.707-.707m12.728 0l-.707.707m-12.02 12.02l-.707-.707M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <svg class="theme-toggle-icon moon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+                <a href="profile.html" class="group relative">
+                    <div id="userInitial" class="w-11 h-11 bg-white dark:bg-slate-800 border-2 border-orange-100 dark:border-orange-900/50 text-orange-600 rounded-2xl flex items-center justify-center font-bold text-lg shadow-sm transition-all group-hover:border-orange-500 group-hover:shadow-md group-active:scale-90">?</div>
+                    <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white dark:border-slate-800 rounded-full"></div>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-6 py-12">
+        <header class="mb-12 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="text-center md:text-left">
+                <h2 class="text-4xl font-extrabold mb-4 text-main">Neighborhood Circles</h2>
+                <p class="text-secondary font-medium max-w-lg">Local micro-communities based on your pincode. Join your neighbors and grow together.</p>
+            </div>
+            <button id="createGroupBtn" class="onboarding-btn primary !px-8 !py-4 !rounded-2xl flex items-center gap-3 shadow-xl opacity-70 cursor-not-allowed" disabled aria-disabled="true" title="Groups are arriving soon">
+                <div class="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4" />
+                    </svg>
+                </div>
+                <span class="font-black text-xs uppercase tracking-widest text-white">Arriving Soon</span>
+            </button>
+        </header>
+
+        <section id="groupsFullList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Skeleton Loading -->
+            <div class="animate-pulse neighborhood-group-card opacity-50 h-64 bg-elevated border-main"></div>
+            <div class="animate-pulse neighborhood-group-card opacity-50 h-64 bg-elevated border-main"></div>
+            <div class="animate-pulse neighborhood-group-card opacity-50 h-64 bg-elevated border-main"></div>
+        </section>
+    </main>
+
+    <div id="toast" class="hidden"></div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/posts.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Update user stats in nav
+            getMe().then(user => {
+                if (user) {
+                    document.getElementById('userKarmaDisplay').textContent = user.karma;
+                }
+            });
+
+            const list = document.getElementById('groupsFullList');
+            const loadGroups = async () => {
+                list.innerHTML = `
+                    <div class="col-span-full empty-state-container bg-elevated border-main shadow-xl p-16 rounded-[40px] text-center">
+                        <div class="w-24 h-24 bg-primary-light dark:bg-primary-dark/20 rounded-3xl flex items-center justify-center mx-auto mb-8 text-primary-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-black mb-4 text-main">Neighborhood Circles Are Arriving Soon</h3>
+                        <p class="text-secondary font-medium mb-10 max-w-xl mx-auto">We are fine-tuning the Groups experience to make local circles smoother, safer, and more useful. This section will go live shortly.</p>
+                        <span class="inline-flex items-center justify-center px-6 py-3 rounded-2xl bg-secondary border-main text-[11px] font-black uppercase tracking-widest text-secondary">Coming Soon</span>
+                    </div>
+                `;
+            };
+            window.loadGroups = loadGroups;
+
+            await loadGroups();
+        });
+    </script>
+</body>
+</html>

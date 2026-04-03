@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <title>Login - HelpCircle</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen flex items-center justify-center p-6 py-12 relative transition-colors duration-300">
+    <!-- Background Decor -->
+    <div class="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden -z-10">
+        <div class="absolute -top-24 -left-24 w-96 h-96 bg-primary-100/50 dark:bg-primary-900/10 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-secondary-100/50 dark:bg-secondary-900/10 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="card w-full max-w-[440px] p-10 animate-fade-in my-8 shadow-xl shadow-primary-200 dark:shadow-none">
+        <div class="text-center mb-10">
+            <div class="w-16 h-16 bg-primary-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-primary-200 dark:shadow-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 21l-8.228-9.96a5 5 0 117.228-6.904 5 5 0 117.228 6.904L12 21z" />
+                </svg>
+            </div>
+            <h1 class="text-3xl font-extrabold tracking-tight mb-2">Welcome Back</h1>
+            <p class="font-medium">Ready to help your neighbors today?</p>
+        </div>
+
+        <form id="loginForm" class="space-y-6">
+            <div class="space-y-4">
+                <div class="relative group">
+                    <div class="auth-input-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-400 dark:text-slate-600 group-focus-within:text-primary-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+                        </svg>
+                    </div>
+                    <input type="email" id="email" required placeholder="Email Address" class="input-field auth-input-with-icon">
+                </div>
+                <div class="relative group">
+                    <div class="auth-input-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-400 dark:text-slate-600 group-focus-within:text-primary-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                    </div>
+                    <input type="password" id="password" required placeholder="Password" class="input-field auth-input-with-icon">
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between px-1">
+                <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" class="w-4 h-4 text-primary-600 rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-primary-500">
+                    <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Remember me</span>
+                </label>
+                <a href="#" class="text-xs font-bold text-primary-600 dark:text-primary-400 uppercase tracking-wider hover:underline">Forgot?</a>
+            </div>
+
+            <button type="submit" class="btn-primary w-full py-5 text-lg">Sign In</button>
+        </form>
+
+        <p class="mt-10 text-center text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
+            New to HelpCircle? <a href="register.html" class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline decoration-primary-200 decoration-2 underline-offset-4">Create Account</a>
+        </p>
+    </div>
+
+    <div id="toast" class="hidden"></div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.textContent;
+            btn.textContent = 'Authenticating...';
+            btn.disabled = true;
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (await login(email, password)) {
+                window.location.href = 'index.html';
+            } else {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <title>Community Leaderboard - HelpCircle</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        // Immediate theme sync to prevent flicker
+        (function() {
+            const savedTheme = localStorage.getItem('hc_theme') || 'light';
+            if (savedTheme === 'dark') document.documentElement.classList.add('dark');
+        })();
+    </script>
+    <style>
+        /* Optimization for dark mode contrast */
+        html.dark body {
+            background-color: #020617 !important;
+        }
+        html.dark .text-main {
+            color: #f8fafc !important;
+        }
+        html.dark .text-secondary {
+            color: #cbd5e1 !important;
+        }
+        html.dark .bg-elevated {
+            background-color: #0f172a !important;
+            border-color: #1e293b !important;
+        }
+        html.dark .bg-secondary {
+            background-color: #1e293b !important;
+        }
+        html.dark .divide-main > * + * {
+            border-color: #1e293b !important;
+        }
+    </style>
+</head>
+<body class="pb-24 transition-colors duration-300">
+    <!-- Navbar -->
+    <nav class="glass sticky top-0 z-50 px-4 py-4 border-b border-slate-200/50 dark:border-slate-800/50">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <a href="index.html" class="flex items-center gap-2">
+                    <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg shadow-orange-200 dark:shadow-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 21l-8.228-9.96a5 5 0 117.228-6.904 5 5 0 117.228 6.904L12 21z" />
+                        </svg>
+                    </div>
+                    <h1 class="text-2xl font-extrabold tracking-tight text-main">Help<span class="text-orange-600">Circle</span></h1>
+                </a>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-1 bg-slate-100/50 dark:bg-slate-800/50 p-1 rounded-2xl border border-slate-200/50 dark:border-slate-700/50">
+                <a href="index.html" class="px-4 py-2 rounded-xl text-sm font-bold transition-all text-secondary hover:text-primary-600">Explore</a>
+                <a href="groups.html" class="px-4 py-2 rounded-xl text-sm font-bold transition-all text-secondary hover:text-primary-600">Groups</a>
+                <a href="leaderboard.html" class="px-4 py-2 rounded-xl text-sm font-bold transition-all bg-white dark:bg-slate-700 text-primary-600 shadow-sm">Leaderboard</a>
+                <a href="profile.html" class="px-4 py-2 rounded-xl text-sm font-bold transition-all text-secondary hover:text-primary-600">Profile</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <div class="hidden sm:flex flex-col items-end mr-1">
+                    <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Local Karma</span>
+                    <span id="userKarmaDisplay" class="text-sm font-extrabold text-orange-600">...</span>
+                </div>
+                <div class="notification-wrap">
+                    <button id="notificationBtn" class="notification-btn" title="Notifications">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                        <span id="notificationBadge" class="notification-badge hidden">0</span>
+                    </button>
+                    <div id="notificationPanel" class="notification-panel hidden">
+                        <div class="notification-panel-header">
+                            <h4>Notifications</h4>
+                            <button id="notificationMarkAll" class="notification-mark-all">Mark all read</button>
+                        </div>
+                        <div id="notificationList" class="notification-list"></div>
+                    </div>
+                </div>
+                <button id="themeToggle" class="theme-toggle" title="Toggle dark mode">
+                    <svg class="theme-toggle-icon sun" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1m-16 0H1m15.364 1.636l.707.707M6.343 6.343l-.707-.707m12.728 0l-.707.707m-12.02 12.02l-.707-.707M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <svg class="theme-toggle-icon moon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+                <a href="profile.html" class="group relative">
+                    <div id="userInitial" class="w-11 h-11 bg-white dark:bg-slate-800 border-2 border-orange-100 dark:border-orange-900/50 text-orange-600 rounded-2xl flex items-center justify-center font-bold text-lg shadow-sm transition-all group-hover:border-orange-500 group-hover:shadow-md group-active:scale-90">?</div>
+                    <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white dark:border-slate-800 rounded-full"></div>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-12">
+        <header class="mb-12 text-center">
+            <h2 class="text-4xl font-extrabold mb-4 text-main">Community Heroes</h2>
+            <p class="text-secondary font-medium max-w-lg mx-auto">Celebrating our top neighbors who make the world a better place, one small help at a time.</p>
+        </header>
+
+        <section class="bg-elevated rounded-3xl border-main overflow-hidden shadow-xl shadow-slate-200/50 dark:shadow-none">
+            <div class="p-6 border-b border-main flex items-center justify-between bg-secondary">
+                <span class="text-xs font-black uppercase tracking-widest text-secondary">Weekly Leaderboard</span>
+                <span id="lastUpdated" class="text-[10px] font-bold text-secondary uppercase tracking-widest">Updating Live</span>
+            </div>
+            <div id="leaderboardFullList" class="divide-y divide-main">
+                <!-- Skeleton Loading -->
+                <div class="animate-pulse p-6 flex items-center gap-6">
+                    <div class="w-10 h-10 bg-secondary rounded-full"></div>
+                    <div class="flex-1 space-y-2">
+                        <div class="h-4 bg-secondary rounded-full w-1/4"></div>
+                        <div class="h-3 bg-secondary rounded-full w-1/6"></div>
+                    </div>
+                    <div class="w-16 h-4 bg-secondary rounded-full"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="toast" class="hidden"></div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/posts.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Update user stats in nav
+            getMe().then(user => {
+                if (user) {
+                    document.getElementById('userKarmaDisplay').textContent = user.karma;
+                }
+            });
+
+            const list = document.getElementById('leaderboardFullList');
+            const helpers = await getLeaderboard();
+            
+            if (!helpers || helpers.length === 0) {
+                list.innerHTML = `
+                    <div class="p-12 text-center">
+                        <p class="text-secondary font-medium">No helpers found in your area yet.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            list.innerHTML = helpers.map((helper, index) => {
+                const isTopThree = index < 3;
+                const rankIcon = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : index + 1;
+                const rankBg = index === 0 ? 'bg-yellow-100 dark:bg-yellow-900/20' : 
+                               index === 1 ? 'bg-secondary' : 
+                               index === 2 ? 'bg-orange-100 dark:bg-orange-900/20' : 'bg-secondary';
+
+                return `
+                    <div class="p-6 flex items-center gap-6 hover:bg-secondary transition-all group">
+                        <div class="w-12 h-12 ${rankBg} rounded-2xl flex items-center justify-center font-black text-lg shadow-sm border border-main text-main">
+                            ${rankIcon}
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-lg font-extrabold group-hover:text-primary-600 transition-colors text-main">${helper.name}</h4>
+                            <div class="flex items-center gap-3 mt-1">
+                                <span class="text-[10px] font-black text-emerald-600 uppercase tracking-widest bg-emerald-50 dark:bg-emerald-950/20 px-2 py-0.5 rounded-md">✔ ${helper.totalHelpsCompleted || 0} Helps</span>
+                                <span class="text-slate-300 dark:text-slate-700 text-xs">•</span>
+                                <span class="text-[10px] font-bold text-secondary uppercase tracking-widest">${Number(helper.ratingAverage || 0).toFixed(1)} Avg Rating</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-xl font-black text-orange-600">${helper.karma}</div>
+                            <div class="text-[9px] font-bold text-secondary uppercase tracking-widest">Karma Points</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        });
+    </script>
+</body>
+</html>

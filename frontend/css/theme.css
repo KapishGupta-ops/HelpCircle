@@ -1,0 +1,879 @@
+/* Professional Modern Theme with Comprehensive Dark Mode Support */
+
+:root {
+  /* Core Colors */
+  --color-primary: #FF6B35;
+  --color-primary-light: #FFE5D9;
+  --color-primary-dark: #E55A25;
+  
+  --color-secondary: #004E89;
+  --color-secondary-light: #E8F4F8;
+  --color-secondary-dark: #003A66;
+  
+  --color-accent: #1DD1A1;
+  --color-accent-light: #D5F4E6;
+  --color-accent-dark: #00B369;
+  
+  /* Backgrounds */
+  --color-bg: #F8FAFC;
+  --color-bg-elevated: #FFFFFF;
+  --color-bg-secondary: #F1F5F9;
+  --color-bg-tertiary: #E2E8F0;
+  
+  /* Text */
+  --color-text-primary: #0F172A;
+  --color-text-secondary: #475569;
+  --color-text-tertiary: #94A3B8;
+  
+  /* Borders */
+  --color-border: #E2E8F0;
+  --color-border-light: #F1F5F9;
+  
+  /* Status */
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-danger: #EF4444;
+  --color-info: #3B82F6;
+
+  /* Glass Effects */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-shadow: rgba(0, 0, 0, 0.05);
+
+  /* Shadow */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+html.dark {
+  /* Dark Mode Overrides */
+  --color-bg: #020617;
+  --color-bg-elevated: #0F172A;
+  --color-bg-secondary: #1E293B;
+  --color-bg-tertiary: #334155;
+  
+  --color-text-primary: #F8FAFC;
+  --color-text-secondary: #CBD5E1;
+  --color-text-tertiary: #64748B;
+  
+  --color-border: #1E293B;
+  --color-border-light: #334155;
+  
+  --glass-bg: rgba(15, 23, 42, 0.7);
+  --glass-border: rgba(51, 65, 85, 0.3);
+  --glass-shadow: rgba(0, 0, 0, 0.3);
+
+  /* Core Color Adjustments for Dark Mode */
+  --color-primary-light: #431407;
+  --color-secondary-light: #172554;
+  --color-accent-light: #064E3B;
+}
+
+/* Global Transitions and Styles */
+* {
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg) !important;
+  color: var(--color-text-primary) !important;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.5;
+}
+
+/* Component Styling Using Variables */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-text-primary);
+  font-weight: 800;
+}
+
+p {
+  color: var(--color-text-secondary);
+}
+
+/* Enhanced text color support for dark mode */
+.text-slate-600, .text-slate-500, .text-slate-400 {
+  color: var(--color-text-secondary) !important;
+}
+
+html.dark .text-slate-600, 
+html.dark .text-slate-500, 
+html.dark .text-slate-400 {
+  color: rgb(203 213 225 / 1) !important;
+}
+
+html.dark h1, 
+html.dark h2, 
+html.dark h3, 
+html.dark h4, 
+html.dark h5, 
+html.dark h6 {
+  color: var(--color-text-primary);
+}
+
+html.dark p {
+  color: var(--color-text-secondary);
+}
+
+.card, .modal-content {
+  background-color: var(--color-bg-elevated) !important;
+  border: 1px solid var(--color-border) !important;
+  color: var(--color-text-primary);
+}
+
+.input-field {
+  background-color: var(--color-bg-elevated) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-text-primary) !important;
+}
+
+.input-field::placeholder {
+  color: var(--color-text-tertiary) !important;
+}
+
+.glass {
+  background-color: var(--glass-bg) !important;
+  border-color: var(--glass-border) !important;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 6px -1px var(--glass-shadow);
+}
+
+/* Buttons */
+.btn-primary {
+  background: var(--color-primary) !important;
+  color: #FFFFFF !important;
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-dark) !important;
+}
+
+.btn-secondary {
+  background-color: var(--color-bg-secondary) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-text-primary) !important;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-bg-tertiary) !important;
+}
+
+/* Category Filters */
+.category-filter-btn {
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  transition: all 0.2s;
+}
+
+.category-filter-btn.active {
+  background-color: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.category-filter-btn:not(.active):hover {
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+}
+
+/* SVG Icons in dark mode */
+html.dark svg {
+  color: inherit;
+}
+
+html.dark svg[stroke="currentColor"],
+html.dark svg[fill="currentColor"] {
+  color: var(--color-text-primary);
+}
+
+/* Ensure button text is always visible */
+button {
+  color: inherit;
+}
+
+/* Interactive Card Hover Effects */
+.card-interactive:hover {
+  border-color: var(--color-primary) !important;
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Badges */
+.badge-urgent {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #EF4444;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+html.dark .badge-urgent {
+  background-color: rgba(239, 68, 68, 0.2);
+}
+
+/* Map Loader Custom Styling */
+#mapLoader {
+  background-color: var(--color-bg) !important;
+}
+
+/* Custom Scrollbar for Dark Mode */
+html.dark ::-webkit-scrollbar {
+  width: 10px;
+}
+
+html.dark ::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: var(--color-bg-tertiary);
+  border-radius: 5px;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-tertiary);
+}
+
+/* Theme Toggle Button refined */
+.theme-toggle {
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-toggle:hover {
+  background-color: var(--color-bg-tertiary);
+  color: var(--color-text-primary);
+}
+
+.theme-toggle-icon {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-toggle-icon.sun {
+  opacity: 1;
+  transform: rotate(0) scale(1);
+}
+
+.theme-toggle-icon.moon {
+  opacity: 0;
+  transform: rotate(90deg) scale(0);
+}
+
+html.dark .theme-toggle-icon.sun {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0);
+}
+
+html.dark .theme-toggle-icon.moon {
+  opacity: 1;
+  transform: rotate(0) scale(1);
+}
+
+/* Navbar and header text visibility */
+nav.glass h1,
+nav.glass .brand-text {
+  color: var(--color-text-primary) !important;
+}
+
+html.dark nav.glass {
+  background-color: rgba(15, 23, 42, 0.8) !important;
+  border-color: rgba(51, 65, 85, 0.3) !important;
+}
+
+html.dark nav.glass h1,
+html.dark nav.glass .brand-text {
+  color: var(--color-text-primary) !important;
+}
+
+/* Keep nav tab contrast stable in dark mode without overriding active utility colors */
+.top-nav-tabs {
+  background-color: color-mix(in srgb, var(--color-bg-secondary) 75%, transparent) !important;
+  border-color: color-mix(in srgb, var(--color-border) 85%, transparent) !important;
+}
+
+.top-nav-link {
+  color: var(--color-text-secondary) !important;
+}
+
+.top-nav-link:hover {
+  color: var(--color-primary) !important;
+}
+
+.top-nav-link.active {
+  background-color: var(--color-bg-elevated) !important;
+  color: var(--color-primary) !important;
+}
+
+html.dark .top-nav-link.active {
+  background-color: rgba(51, 65, 85, 0.85) !important;
+  color: #fb923c !important;
+}
+
+/* Map Styles */
+.map-gradient {
+  background: linear-gradient(to bottom, transparent, var(--color-bg));
+}
+
+.notification-wrap {
+  position: relative;
+}
+
+.notification-btn {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-secondary);
+  color: var(--color-text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.notification-btn:hover {
+  color: var(--color-primary);
+}
+
+.notification-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  padding: 0 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 800;
+  background: #ef4444;
+  color: #fff;
+  border: 2px solid var(--color-bg-elevated);
+}
+
+/* Community Sections Redesign */
+.leaderboard-card {
+  background: var(--color-bg-elevated) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: 16px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.2s ease;
+  color: var(--color-text-primary) !important;
+}
+
+.leaderboard-card:hover {
+  border-color: var(--color-primary) !important;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.leaderboard-rank {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.rank-1 { background: #FFD700 !important; color: #000 !important; box-shadow: 0 0 15px rgba(255, 215, 0, 0.3); }
+.rank-2 { background: #C0C0C0 !important; color: #000 !important; }
+.rank-3 { background: #CD7F32 !important; color: #fff !important; }
+.rank-other { background: var(--color-bg-secondary) !important; color: var(--color-text-tertiary) !important; }
+
+.neighborhood-group-card {
+  background: var(--color-bg-elevated) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: 20px;
+  padding: 20px;
+  transition: all 0.2s ease;
+  color: var(--color-text-primary) !important;
+}
+
+.neighborhood-group-card:hover {
+  border-color: var(--color-primary) !important;
+  box-shadow: var(--shadow-md);
+}
+
+.empty-state-container {
+  background: var(--color-bg-secondary) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: 24px;
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--color-text-primary) !important;
+}
+
+/* Utility Classes for Theme Variables */
+.bg-elevated { background-color: var(--color-bg-elevated) !important; }
+.text-main { color: var(--color-text-primary) !important; }
+.text-secondary { color: var(--color-text-secondary) !important; }
+.border-main { border: 1px solid var(--color-border) !important; }
+
+/* Modal Improvements */
+.modal-overlay {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+  backdrop-filter: blur(8px);
+}
+
+.modal-overlay:not(.hidden) {
+  display: flex;
+}
+
+.modal-content {
+  max-height: 90vh;
+  overflow-y: auto;
+  width: 100%;
+  max-width: 600px;
+  border-radius: 24px;
+  position: relative;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) transparent;
+}
+
+.modal-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary);
+  border-radius: 10px;
+}
+
+/* Ask for Help toggles: explicit dark mode fallback when Tailwind dark utilities are unavailable */
+html.dark #createModal .create-toggle-chip {
+  background-color: rgba(30, 41, 59, 0.55) !important;
+  border-color: rgba(51, 65, 85, 0.9) !important;
+  color: var(--color-text-primary) !important;
+}
+
+html.dark #createModal .create-toggle-chip:hover {
+  background-color: rgba(51, 65, 85, 0.7) !important;
+}
+
+html.dark #createModal .create-toggle-chip-sos {
+  background-color: rgba(127, 29, 29, 0.28) !important;
+  border-color: rgba(127, 29, 29, 0.55) !important;
+}
+
+html.dark #createModal .create-toggle-chip-sos:hover {
+  background-color: rgba(127, 29, 29, 0.38) !important;
+}
+
+html.dark #createModal .create-toggle-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: #0f172a !important;
+  border: 1px solid #475569 !important;
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.2);
+}
+
+html.dark #createModal .create-toggle-checkbox:checked {
+  background-color: #fb923c !important;
+  border-color: #ea580c !important;
+}
+
+.input-field {
+  padding: 12px 16px !important;
+  font-size: 0.9rem !important;
+}
+
+/* Login input icon alignment override */
+.auth-input-icon {
+  position: absolute;
+  top: 50%;
+  left: 1.25rem;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.auth-input-with-icon {
+  padding-left: 3.5rem !important;
+}
+
+.notification-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: min(360px, 92vw);
+  max-height: 460px;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--color-bg-elevated);
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
+  z-index: 80;
+}
+
+.notification-panel-header {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.notification-panel-header h4 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.notification-filter-row {
+  display: flex;
+  gap: 6px;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--color-border-light);
+  overflow-x: auto;
+}
+
+.notification-filter-chip {
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-secondary);
+  color: var(--color-text-secondary);
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.notification-filter-chip.active {
+  border-color: color-mix(in srgb, var(--color-primary) 40%, transparent);
+  background: color-mix(in srgb, var(--color-primary-light) 45%, transparent);
+  color: var(--color-primary);
+}
+
+.notification-mark-all {
+  border: none;
+  background: transparent;
+  color: var(--color-primary);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.notification-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.notification-item {
+  width: 100%;
+  text-align: left;
+  border: none;
+  border-bottom: 1px solid var(--color-border-light);
+  background: transparent;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.notification-item:hover {
+  background: var(--color-bg-secondary);
+}
+
+.notification-item.unread {
+  background: color-mix(in srgb, var(--color-primary-light) 26%, transparent);
+}
+
+.notification-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  margin-bottom: 2px;
+}
+
+.notification-type-chip {
+  display: inline-block;
+  margin-bottom: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary-light) 60%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 28%, transparent);
+}
+
+.notification-body {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+
+.notification-meta {
+  margin-top: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-text-tertiary);
+}
+
+.notification-empty {
+  padding: 24px 12px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.notification-action-btn {
+  margin-top: 8px;
+  border: 1px solid color-mix(in srgb, var(--color-primary) 30%, transparent);
+  background: color-mix(in srgb, var(--color-primary-light) 40%, transparent);
+  color: var(--color-primary);
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.notification-action-btn:hover {
+  background: color-mix(in srgb, var(--color-primary-light) 62%, transparent);
+}
+
+.notification-rating-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.48);
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  pointer-events: auto;
+}
+
+.notification-rating-overlay.hidden {
+  display: none;
+  pointer-events: none;
+}
+
+.notification-rating-card {
+  width: min(420px, 96vw);
+  position: relative;
+  z-index: 1;
+  border-radius: 18px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-elevated);
+  box-shadow: var(--shadow-xl);
+  padding: 18px;
+}
+
+/* Navbar Branding - Ensure visibility in both light and dark modes */
+nav h1 {
+  color: var(--color-text-primary) !important;
+}
+
+nav h1 span {
+  color: var(--color-primary) !important;
+}
+
+html.dark nav h1 {
+  color: #F8FAFC !important;
+}
+
+html.dark nav h1 span {
+  color: #FB923C !important;
+}
+
+/* Dark mode navbar controls */
+nav.glass .notification-btn,
+nav.glass .theme-toggle,
+nav.glass #userInitial {
+  background-color: var(--color-bg-elevated);
+  border-color: var(--color-border);
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+html.dark nav.glass .notification-btn,
+html.dark nav.glass .theme-toggle {
+  background-color: rgba(30, 41, 59, 0.96);
+  border-color: rgba(51, 65, 85, 0.75);
+  color: #E2E8F0;
+}
+
+html.dark nav.glass #userInitial {
+  background: linear-gradient(145deg, rgba(30, 41, 59, 0.98), rgba(15, 23, 42, 0.98)) !important;
+  border-color: rgba(71, 85, 105, 0.85) !important;
+  color: #FDBA74 !important;
+  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.35);
+}
+
+html.dark nav.glass #userInitial:hover,
+html.dark nav.glass .notification-btn:hover,
+html.dark nav.glass .theme-toggle:hover {
+  border-color: rgba(251, 146, 60, 0.6);
+  color: #FFFFFF;
+}
+
+/* Bulk Offer button theme consistency */
+#bulkOfferBtn {
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+}
+
+#bulkOfferBtn:hover {
+  background-color: var(--color-bg-tertiary);
+}
+
+html.dark #bulkOfferBtn {
+  background-color: rgba(30, 41, 59, 0.92);
+  border-color: rgba(51, 65, 85, 0.75);
+  color: #E2E8F0;
+}
+
+html.dark #bulkOfferBtn:hover {
+  background-color: rgba(51, 65, 85, 0.95);
+}
+
+#bulkOfferBtn.bulk-offer-active,
+html.dark #bulkOfferBtn.bulk-offer-active {
+  background: linear-gradient(145deg, var(--color-primary), var(--color-primary-dark)) !important;
+  border-color: transparent !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 12px 24px rgba(255, 107, 53, 0.24);
+}
+
+#bulkOfferBtn.bulk-offer-active:hover,
+html.dark #bulkOfferBtn.bulk-offer-active:hover {
+  background: linear-gradient(145deg, var(--color-primary-dark), var(--color-primary)) !important;
+}
+
+.notification-rating-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.notification-rating-head h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.notification-rating-close {
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-secondary);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.notification-rating-copy {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+.notification-rating-stars {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.notification-rating-star {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-secondary);
+  color: var(--color-text-tertiary);
+  font-size: 23px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.notification-rating-star.active,
+.notification-rating-star:hover {
+  color: #f59e0b;
+  border-color: rgba(245, 158, 11, 0.35);
+  background: rgba(245, 158, 11, 0.12);
+}
+
+.notification-rating-hint {
+  margin-top: 10px;
+  margin-bottom: 0;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+
+.notification-rating-actions {
+  margin-top: 14px;
+  display: flex;
+  gap: 8px;
+}
+
+.notification-rating-btn {
+  flex: 1;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 9px 10px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.notification-rating-btn.secondary {
+  background: var(--color-bg-secondary);
+  border-color: var(--color-border);
+  color: var(--color-text-secondary);
+}
+
+.notification-rating-btn.primary {
+  background: linear-gradient(145deg, #f59e0b, #d97706);
+  color: #fff;
+}

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <title>HelpCircle - Your Local Neighborhood Network</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .map-gradient {
+            background: linear-gradient(to bottom, rgba(248, 250, 252, 0) 0%, rgba(248, 250, 252, 1) 100%);
+        }
+        html.dark .map-gradient {
+            background: linear-gradient(to bottom, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 1) 100%);
+        }
+
+        .onboarding-panel {
+            background: linear-gradient(140deg, color-mix(in srgb, var(--color-primary) 16%, var(--color-bg-elevated)), var(--color-bg-elevated));
+            border: 1px solid color-mix(in srgb, var(--color-primary) 28%, var(--color-border));
+            border-radius: 20px;
+            padding: 18px;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 22px;
+        }
+
+        .onboarding-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .onboarding-btn {
+            border: none;
+            border-radius: 12px;
+            padding: 10px 14px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .onboarding-btn.primary {
+            background: linear-gradient(145deg, var(--color-primary), var(--color-primary-dark));
+            color: #fff;
+        }
+
+        .onboarding-btn.secondary {
+            background: var(--color-bg-secondary);
+            color: var(--color-text-secondary);
+            border: 1px solid var(--color-border);
+        }
+
+        #openSOSModal {
+            background: #dc2626;
+        }
+
+        #openSOSModal:hover {
+            background: #b91c1c;
+        }
+
+        #openCreateModal {
+            background: #f97316;
+        }
+
+        #openCreateModal:hover {
+            background: #ea580c;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 pb-24 transition-colors duration-300">
+    <!-- Navbar -->
+    <nav class="glass sticky top-0 z-50 px-4 py-4 border-b border-slate-200/50 dark:border-slate-800/50">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg shadow-orange-200 dark:shadow-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 21l-8.228-9.96a5 5 0 117.228-6.904 5 5 0 117.228 6.904L12 21z" />
+                    </svg>
+                </div>
+                <h1 class="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white">Help<span class="text-orange-600">Circle</span></h1>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-1 bg-slate-100/50 dark:bg-slate-800/50 p-1 rounded-2xl border border-slate-200/50 dark:border-slate-700/50">
+                <a href="index.html" class="px-4 py-2 rounded-xl text-sm font-bold transition-all bg-white dark:bg-slate-700 text-primary-600 shadow-sm">Explore</a>
+                <a href="groups.html" class="px-4 py-2 rounded-xl text-sm font-bold transition-all text-slate-500 dark:text-slate-400 hover:text-primary-600">Groups</a>
+                <a href="leaderboard.html" class="px-4 py-2 rounded-xl text-sm font-bold transition-all text-slate-500 dark:text-slate-400 hover:text-primary-600">Leaderboard</a>
+                <a href="profile.html" class="px-4 py-2 rounded-xl text-sm font-bold transition-all text-slate-500 dark:text-slate-400 hover:text-primary-600">Profile</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <div class="hidden sm:flex flex-col items-end mr-1">
+                    <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Local Karma</span>
+                    <span id="userKarmaDisplay" class="text-sm font-extrabold text-orange-600">...</span>
+                </div>
+                <div class="hidden md:flex flex-col items-end mr-1">
+                    <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Wallet Balance</span>
+                    <span id="userWalletDisplay" class="text-sm font-extrabold text-emerald-600">₹0.00</span>
+                </div>
+                <div class="notification-wrap">
+                    <button id="notificationBtn" class="notification-btn" title="Notifications">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                        <span id="notificationBadge" class="notification-badge hidden">0</span>
+                    </button>
+                    <div id="notificationPanel" class="notification-panel hidden">
+                        <div class="notification-panel-header">
+                            <h4>Notifications</h4>
+                            <button id="notificationMarkAll" class="notification-mark-all">Mark all read</button>
+                        </div>
+                        <div id="notificationList" class="notification-list"></div>
+                    </div>
+                </div>
+                <button id="themeToggle" class="theme-toggle" title="Toggle dark mode">
+                    <svg class="theme-toggle-icon sun" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1m-16 0H1m15.364 1.636l.707.707M6.343 6.343l-.707-.707m12.728 0l-.707.707m-12.02 12.02l-.707-.707M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <svg class="theme-toggle-icon moon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+                <a href="profile.html" class="group relative">
+                    <div id="userInitial" class="w-11 h-11 bg-white dark:bg-slate-800 border-2 border-orange-100 dark:border-orange-900/50 text-orange-600 rounded-2xl flex items-center justify-center font-bold text-lg shadow-sm transition-all group-hover:border-orange-500 group-hover:shadow-md group-active:scale-90">?</div>
+                    <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white dark:border-slate-800 rounded-full"></div>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero/Map Section -->
+    <div class="relative w-full h-[45vh] min-h-[400px]">
+        <div id="map" class="w-full h-full"></div>
+        <div class="absolute inset-0 pointer-events-none map-gradient"></div>
+        
+        <!-- Map Floating Controls -->
+        <div class="absolute bottom-12 left-1/2 -translate-x-1/2 w-full max-w-xl px-4 pointer-events-auto">
+            <div class="glass p-2 rounded-3xl flex items-center gap-2">
+                <div class="flex-1 flex items-center gap-3 px-4 py-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span id="currentAreaText" class="text-sm font-bold truncate">Detecting your location...</span>
+                </div>
+                <button onclick="initMap()" class="p-3 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-2xl transition-all shadow-sm border border-slate-100 dark:border-slate-700 group">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-400 group-hover:text-primary-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Loader for Map -->
+        <div id="mapLoader" class="absolute inset-0 flex items-center justify-center z-10 transition-opacity duration-500">
+            <div class="flex flex-col items-center gap-4">
+                <div class="animate-spin rounded-full h-12 w-12 border-4 border-primary-500 border-t-transparent"></div>
+                <p class="text-sm font-bold uppercase tracking-widest">Loading Map</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feed Container -->
+    <main class="max-w-4xl mx-auto px-4 -mt-6 relative z-20">
+        <section id="onboardingPanel" class="onboarding-panel hidden">
+            <div class="flex items-start justify-between gap-4">
+                <div>
+                    <h3 id="onboardingTitle" class="text-lg font-extrabold">Welcome to HelpCircle</h3>
+                    <p id="onboardingBody" class="text-sm font-medium mt-1">Start with one quick action to unlock your neighborhood feed momentum.</p>
+                </div>
+                <button id="onboardingDismiss" class="onboarding-btn secondary">Dismiss</button>
+            </div>
+            <div class="onboarding-actions">
+                <button id="onboardingPrimaryAction" class="onboarding-btn primary">Start</button>
+                <button id="onboardingSecondaryAction" class="onboarding-btn secondary">See Nearby Requests</button>
+            </div>
+        </section>
+
+        <!-- Feed Header & Filters -->
+        <div class="flex flex-col gap-6 mb-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-3xl font-extrabold">Nearby Help</h2>
+                    <p class="font-medium mt-1">Discover requests in your 10km circle</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button id="bulkOfferBtn" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-all border border-slate-200 dark:border-slate-700">Bulk Offer</button>
+                    <div class="glass px-4 py-2 rounded-2xl flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse"></span>
+                        <span class="text-xs font-bold uppercase tracking-wider">Live Feed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="bulkOfferBar" class="hidden bg-primary-600 text-white p-4 rounded-2xl flex items-center justify-between shadow-lg animate-in slide-in-from-top duration-300">
+                <span id="bulkCountText" class="text-sm font-bold">0 requests selected</span>
+                <div class="flex gap-3">
+                    <button id="cancelBulk" class="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-xl text-xs font-bold uppercase transition-all">Cancel</button>
+                    <button id="confirmBulk" class="px-4 py-2 bg-white text-primary-600 rounded-xl text-xs font-bold uppercase transition-all">Offer Help to All</button>
+                </div>
+            </div>
+
+            <!-- Category Quick Filters -->
+            <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+                <button class="px-5 py-2.5 rounded-xl font-bold text-sm transition-all whitespace-nowrap category-filter-btn active">All Needs</button>
+                <button class="px-5 py-2.5 rounded-xl font-bold text-sm transition-all whitespace-nowrap category-filter-btn">Notes</button>
+                <button class="px-5 py-2.5 rounded-xl font-bold text-sm transition-all whitespace-nowrap category-filter-btn">Chargers</button>
+                <button class="px-5 py-2.5 rounded-xl font-bold text-sm transition-all whitespace-nowrap category-filter-btn">Medical</button>
+                <button class="px-5 py-2.5 rounded-xl font-bold text-sm transition-all whitespace-nowrap category-filter-btn">Rides</button>
+            </div>
+        </div>
+
+        <div id="feedList" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Skeleton Loading -->
+            <div class="animate-pulse card h-64"></div>
+            <div class="animate-pulse card h-64"></div>
+        </div>
+
+    </main>
+
+        <!-- Floating Action Button -->
+        <div class="fixed bottom-8 left-0 right-0 px-6 flex justify-center gap-4 pointer-events-none z-[40]">
+            <button id="openSOSModal" class="pointer-events-auto px-8 py-5 rounded-3xl shadow-2xl flex items-center gap-4 hover:-translate-y-1 transition-all active:scale-95 group pulse-glow dark:shadow-none">
+                <div class="w-8 h-8 bg-white/20 rounded-xl flex items-center justify-center group-hover:bg-white/30 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                </div>
+                <span class="font-extrabold text-sm uppercase tracking-widest text-white">SOS Emergency</span>
+            </button>
+
+            <button id="openCreateModal" class="pointer-events-auto px-8 py-5 rounded-3xl shadow-2xl flex items-center gap-4 hover:-translate-y-1 transition-all active:scale-95 group pulse-glow dark:shadow-none">
+                <div class="w-8 h-8 bg-white/20 rounded-xl flex items-center justify-center group-hover:bg-white/30 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4" />
+                    </svg>
+                </div>
+                <span class="font-extrabold text-sm uppercase tracking-widest text-white">Ask for Help</span>
+            </button>
+        </div>
+
+    <!-- Modals -->
+    <div id="createModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h3 class="text-2xl font-extrabold">What do you need?</h3>
+                    <p class="text-sm font-medium">Your request will be visible to neighbors</p>
+                </div>
+                <button id="closeCreateModal" class="p-2 btn-secondary rounded-xl transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <form id="createPostForm" class="space-y-6">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <label class="block text-xs font-bold uppercase tracking-widest mb-2 ml-1 opacity-60">Title</label>
+                        <input type="text" id="postTitle" required placeholder="Short & clear request" class="input-field">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest mb-2 ml-1 opacity-60">Category</label>
+                        <select id="postCategory" required class="input-field appearance-none">
+                            <option value="Notes">Notes</option>
+                            <option value="Charger">Charger</option>
+                            <option value="Bike Repair">Bike Repair</option>
+                            <option value="Groceries">Groceries</option>
+                            <option value="Ride">Ride</option>
+                            <option value="Medical">Medical</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <label class="create-toggle-chip w-full flex items-center justify-center gap-3 cursor-pointer p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800 transition-all hover:bg-red-50 dark:hover:bg-red-950/30 hover:border-red-100 dark:hover:border-red-900/50 group">
+                            <input type="checkbox" id="postUrgent" class="create-toggle-checkbox w-5 h-5 text-red-600 rounded-lg border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-red-500">
+                            <span class="text-xs font-bold group-hover:text-red-600 transition-colors uppercase tracking-wider">Urgent 🔥</span>
+                        </label>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest mb-2 ml-1 opacity-60">Schedule For (Optional)</label>
+                        <input type="datetime-local" id="postScheduledFor" class="input-field">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest mb-2 ml-1 opacity-60">Expires After (Optional)</label>
+                        <input type="datetime-local" id="postExpiresAt" class="input-field">
+                    </div>
+
+                    <div class="col-span-2 flex gap-4">
+                        <label class="create-toggle-chip flex-1 flex items-center justify-center gap-3 cursor-pointer p-3 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800 transition-all hover:bg-primary-50 dark:hover:bg-primary-900/30 group">
+                            <input type="checkbox" id="postIsEvent" class="create-toggle-checkbox w-4 h-4 text-primary-600 rounded">
+                            <span class="text-[10px] font-bold uppercase tracking-wider">Community Event 🤝</span>
+                        </label>
+                        <label class="create-toggle-chip flex-1 flex items-center justify-center gap-3 cursor-pointer p-3 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800 transition-all hover:bg-primary-50 dark:hover:bg-primary-900/30 group">
+                            <input type="checkbox" id="postIsRecurring" class="create-toggle-checkbox w-4 h-4 text-primary-600 rounded">
+                            <span class="text-[10px] font-bold uppercase tracking-wider">Recurring Need 🔄</span>
+                        </label>
+                    </div>
+
+                    <div class="col-span-2 flex gap-4">
+                        <div class="flex-1">
+                            <label class="block text-xs font-bold uppercase tracking-widest mb-2 ml-1 opacity-60">Price (₹) <span id="priceSuggestion" class="text-primary-500 lowercase font-normal"></span></label>
+                            <input type="number" id="postPrice" placeholder="0 for free" class="input-field">
+                            <p id="createWalletBalance" class="mt-2 text-[10px] font-bold uppercase tracking-widest text-emerald-600">Wallet: ₹0.00</p>
+                            <p id="createEscrowHint" class="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-400">Escrow will be locked when you accept a helper</p>
+                            <a href="profile.html" class="inline-flex mt-2 text-[10px] font-black uppercase tracking-widest text-primary-600 hover:underline">Top Up Wallet</a>
+                        </div>
+                        <div class="flex-1 flex items-end">
+                            <label class="create-toggle-chip create-toggle-chip-sos w-full flex items-center justify-center gap-3 cursor-pointer p-4 bg-red-50 dark:bg-red-950/20 rounded-2xl border border-red-100 dark:border-red-900/30 transition-all hover:bg-red-100 dark:hover:bg-red-950/40 group">
+                                <input type="checkbox" id="postIsSOS" class="create-toggle-checkbox w-5 h-5 text-red-600 rounded-lg border-red-300 dark:border-red-700 bg-white dark:bg-slate-800 focus:ring-red-500">
+                                <span class="text-xs font-bold text-red-600 uppercase tracking-wider">SOS Emergency 🚨</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-widest mb-2 ml-1 opacity-60">Details</label>
+                    <textarea id="postDescription" required rows="4" placeholder="Mention specifically what you need and when..." class="input-field resize-none"></textarea>
+                </div>
+                <button type="submit" class="btn-primary w-full py-5 text-lg">Broadcast Request</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Help Offer Modal -->
+    <div id="offerModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h3 class="text-2xl font-extrabold">Offer a Hand</h3>
+                    <p class="text-sm font-medium">Send a quick message to coordinate</p>
+                </div>
+                <button id="cancelOffer" class="p-2 btn-secondary rounded-xl transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-widest mb-2 ml-1 opacity-60">Your Message</label>
+                    <textarea id="offerMessage" required rows="4" placeholder="I have a spare charger you can use..." class="input-field resize-none"></textarea>
+                </div>
+                <button id="confirmOffer" class="btn-primary w-full py-5 text-lg">Start Chat & Offer Help</button>
+                <p class="text-center text-[10px] font-bold uppercase tracking-widest opacity-60">Helping others earns you 15 Karma Points</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="hidden"></div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/posts.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadGoogleMaps('initMap');
+            // Update user stats in nav
+            getMe().then(user => {
+                if (user) {
+                    document.getElementById('userKarmaDisplay').textContent = user.karma;
+                }
+            });
+
+            // Safety timeout: Hide map loader if it's still there after 10s
+            setTimeout(() => {
+                const loader = document.getElementById('mapLoader');
+                if (loader && !loader.classList.contains('hidden')) {
+                    loader.classList.add('opacity-0');
+                    setTimeout(() => loader.classList.add('hidden'), 500);
+                }
+            }, 10000);
+        });
+    </script>
+</body>
+</html>
