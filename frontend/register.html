@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <title>Join HelpCircle</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .register-page {
+            background:
+                radial-gradient(circle at 90% 10%, rgba(249, 115, 22, 0.08), transparent 35%),
+                radial-gradient(circle at 10% 90%, rgba(14, 165, 233, 0.08), transparent 40%),
+                var(--color-bg);
+            color: var(--color-text-primary);
+        }
+
+        .register-shell {
+            border-color: var(--color-border);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .register-subtitle {
+            color: var(--color-text-secondary);
+        }
+
+        .progress-track {
+            background-color: var(--color-border-light);
+        }
+
+        .progress-track.is-active {
+            background-color: var(--color-primary);
+        }
+
+        .verification-panel {
+            background-color: var(--color-bg-secondary);
+            border: 1px solid var(--color-border);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+        }
+
+        .verification-panel h3 {
+            color: var(--color-text-primary);
+        }
+
+        .verification-panel p {
+            color: var(--color-text-secondary);
+        }
+
+        .required-pill {
+            color: var(--color-text-secondary);
+            background-color: var(--color-bg-elevated);
+            border: 1px solid var(--color-border);
+        }
+
+        .otp-hint,
+        .field-label,
+        .login-meta,
+        .back-link {
+            color: var(--color-text-tertiary);
+        }
+
+        .back-link:hover {
+            color: var(--color-text-primary);
+        }
+
+        .verify-btn {
+            background-color: var(--color-text-primary);
+            color: var(--color-bg-elevated);
+        }
+
+        .verify-btn:hover {
+            filter: brightness(1.08);
+        }
+
+        .verify-btn.is-verified {
+            background-color: var(--color-success);
+            color: #ffffff;
+        }
+
+        .location-btn {
+            background-color: var(--color-bg-secondary);
+            color: var(--color-secondary);
+            border: 1px solid var(--color-border);
+        }
+
+        .location-btn.location-verified {
+            background-color: rgba(16, 185, 129, 0.12);
+            border-color: rgba(16, 185, 129, 0.35);
+            color: var(--color-success);
+        }
+
+        .location-icon,
+        .upload-icon {
+            background-color: var(--color-bg-elevated);
+            border: 1px solid var(--color-border);
+        }
+
+        .readonly-field {
+            background-color: var(--color-bg-secondary) !important;
+            color: var(--color-text-secondary) !important;
+        }
+
+        .upload-dropzone {
+            background-color: var(--color-bg-elevated);
+            color: var(--color-text-tertiary);
+            border-color: var(--color-border);
+        }
+
+        .upload-dropzone:hover {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+        }
+
+        .login-link {
+            color: var(--color-primary);
+        }
+
+        .login-link:hover {
+            color: var(--color-primary-dark);
+        }
+    </style>
+</head>
+<body class="register-page min-h-screen flex items-center justify-center p-6 py-12 relative transition-colors duration-300">
+    <!-- Background Decor -->
+    <div class="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden -z-10">
+        <div class="absolute -top-24 -right-24 w-96 h-96 bg-primary-100/50 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-secondary-100/50 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="card register-shell w-full max-w-[500px] p-8 sm:p-10 animate-fade-in my-8">
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-extrabold tracking-tight mb-2">Create Account</h1>
+            <p class="register-subtitle font-medium">Join 500+ neighbors helping each other</p>
+        </div>
+
+        <!-- Step 1: Basic Info -->
+        <div id="step1" class="space-y-6">
+            <div class="flex gap-3">
+                <div class="h-2 flex-1 bg-primary-600 rounded-full shadow-sm shadow-primary-100 dark:shadow-none"></div>
+                <div class="h-2 flex-1 bg-slate-200 dark:bg-slate-800 rounded-full"></div>
+                <div class="h-2 flex-1 bg-slate-200 dark:bg-slate-800 rounded-full"></div>
+            </div>
+            
+            <div class="space-y-4">
+                <input type="text" id="regName" placeholder="Full Name" class="input-field">
+                <input type="email" id="regEmail" placeholder="Email Address" class="input-field">
+                <input type="password" id="regPassword" placeholder="Create Password" class="input-field">
+            </div>
+            
+            <button onclick="nextStep(2)" class="btn-primary w-full py-5 text-lg">Continue to Verification</button>
+        </div>
+
+        <!-- Step 2: Aadhaar Demo -->
+        <div id="step2" class="hidden space-y-6 animate-slide-up">
+            <div class="flex gap-3">
+                <div class="progress-track is-active h-2 flex-1 rounded-full"></div>
+                <div class="progress-track is-active h-2 flex-1 rounded-full"></div>
+                <div class="progress-track h-2 flex-1 rounded-full"></div>
+            </div>
+
+            <div class="verification-panel">
+                <h3 class="font-extrabold mb-2">Aadhaar Verification</h3>
+                <p class="font-medium text-sm">We use this to ensure only real neighbors join the circle. Your data is encrypted.</p>
+            </div>
+
+            <div class="space-y-4">
+                <div class="relative">
+                    <input type="text" id="aadhaarNumber" maxlength="12" placeholder="12-digit Aadhaar Number" class="input-field">
+                    <div class="required-pill absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-lg">Required</div>
+                </div>
+                
+                <div id="otpBox" class="hidden animate-fade-in">
+                    <input type="text" id="aadhaarOtp" maxlength="6" placeholder="Enter 6-digit OTP" class="input-field text-center text-2xl tracking-[0.5em] font-black">
+                    <p class="otp-hint text-center mt-2 text-xs font-bold uppercase tracking-widest">Demo OTP: 123456</p>
+                </div>
+
+                <button id="aadhaarVerifyBtn" onclick="verifyAadhaarStep()" class="verify-btn w-full font-extrabold py-5 rounded-2xl transition-all active:scale-95">Send Verification OTP</button>
+            </div>
+
+            <div class="flex gap-4">
+                <button onclick="nextStep(1)" class="back-link flex-1 font-bold uppercase text-xs tracking-widest">Back</button>
+                <button id="step2Next" disabled class="flex-[2] btn-primary opacity-50">Next Step</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Address & Geolocation -->
+        <div id="step3" class="hidden space-y-6 animate-slide-up">
+            <div class="flex gap-3">
+                <div class="h-2 flex-1 bg-primary-600 rounded-full shadow-sm shadow-primary-100 dark:shadow-none"></div>
+                <div class="h-2 flex-1 bg-primary-600 rounded-full shadow-sm shadow-primary-100 dark:shadow-none"></div>
+                <div class="h-2 flex-1 bg-primary-600 rounded-full shadow-sm shadow-primary-100 dark:shadow-none"></div>
+            </div>
+            
+            <div class="space-y-5">
+                <button id="locBtn" onclick="captureLocation()" class="location-btn w-full font-extrabold py-4 rounded-3xl flex flex-col items-center justify-center gap-1 transition-all group">
+                    <div class="flex items-center gap-3">
+                        <div class="location-icon w-8 h-8 rounded-xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <span id="locStatus" class="text-lg">Auto-detect Location</span>
+                    </div>
+                    <span id="locDetails" class="text-[10px] font-bold uppercase tracking-[0.2em] opacity-60">GPS Precision Required</span>
+                </button>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                        <label class="field-label text-[10px] font-bold uppercase tracking-widest ml-1">District</label>
+                        <input type="text" id="regDistrict" readonly class="input-field readonly-field cursor-not-allowed text-sm">
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="field-label text-[10px] font-bold uppercase tracking-widest ml-1">State</label>
+                        <input type="text" id="regState" readonly class="input-field readonly-field cursor-not-allowed text-sm">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="text" id="regFlat" placeholder="Flat/House No." class="input-field">
+                    <input type="text" id="regPincode" maxlength="6" placeholder="Pincode" class="input-field">
+                </div>
+                
+                <input type="text" id="regStreet" placeholder="Street Name / Landmark" class="input-field">
+
+                <div class="space-y-3">
+                    <label class="field-label block text-xs font-bold uppercase tracking-widest ml-1">Address Proof</label>
+                    <label class="upload-dropzone w-full flex flex-col items-center px-6 py-4 rounded-3xl border-2 border-dashed cursor-pointer transition-all group">
+                        <div class="upload-icon w-12 h-12 rounded-2xl flex items-center justify-center mb-3 transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                            </svg>
+                        </div>
+                        <span id="fileName" class="text-xs font-bold uppercase tracking-wider">Select PDF or Image</span>
+                        <input type="file" id="addressProof" class="hidden" accept=".jpg,.jpeg,.png,.pdf" onchange="updateFileName(this)">
+                    </label>
+                </div>
+            </div>
+
+            <div class="flex gap-4 pt-4">
+                <button onclick="nextStep(2)" class="back-link flex-1 font-bold uppercase text-xs tracking-widest">Back</button>
+                <button id="finishBtn" onclick="handleFinalRegister()" class="flex-[2] btn-primary">Complete Setup</button>
+            </div>
+        </div>
+
+        <p class="login-meta mt-10 text-center text-sm font-bold uppercase tracking-widest">
+            Already have an account? <a href="login.html" class="login-link underline decoration-primary-200 decoration-2 underline-offset-4">Login</a>
+        </p>
+    </div>
+
+    <div id="toast" class="hidden"></div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        let currentLat, currentLng;
+        let aadhaarVerified = false;
+
+        function nextStep(step) {
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('step3').classList.add('hidden');
+            document.getElementById(`step${step}`).classList.remove('hidden');
+        }
+
+        async function verifyAadhaarStep() {
+            const num = document.getElementById('aadhaarNumber').value;
+            const otpBox = document.getElementById('otpBox');
+            const btn = document.getElementById('aadhaarVerifyBtn');
+            const nextBtn = document.getElementById('step2Next');
+
+            if (otpBox.classList.contains('hidden')) {
+                if (num.length !== 12) return showToast("Enter 12-digit Aadhaar", "error");
+                otpBox.classList.remove('hidden');
+                btn.textContent = "Verify OTP Code";
+                showToast("Verification code sent!");
+            } else {
+                const otp = document.getElementById('aadhaarOtp').value;
+                const res = await verifyAadhaarAPI(num, otp);
+                if (res.success) {
+                    aadhaarVerified = true;
+                    showToast("Identity Verified!", "success");
+                    btn.textContent = "Verified Successfully ✓";
+                    btn.classList.add('is-verified');
+                    btn.disabled = true;
+                    nextBtn.disabled = false;
+                    nextBtn.classList.remove('opacity-50');
+                    nextBtn.onclick = () => nextStep(3);
+                } else {
+                    showToast(res.message, "error");
+                }
+            }
+        }
+
+        function updateFileName(input) {
+            const nameEl = document.getElementById('fileName');
+            if (input.files && input.files[0]) {
+                nameEl.textContent = input.files[0].name;
+                nameEl.classList.add('text-primary-600');
+            }
+        }
+
+        async function captureLocation() {
+            const status = document.getElementById('locStatus');
+            const details = document.getElementById('locDetails');
+            const btn = document.getElementById('locBtn');
+            
+            status.textContent = "Locating...";
+            
+            try {
+                const pos = await getCurrentLocation();
+                currentLat = pos.lat;
+                currentLng = pos.lng;
+                
+                const addressData = await reverseGeocode(currentLat, currentLng);
+                
+                if (addressData) {
+                    const districtInput = document.getElementById('regDistrict');
+                    const stateInput = document.getElementById('regState');
+
+                    districtInput.value = addressData.district || "";
+                    stateInput.value = addressData.state || "";
+                    if (addressData.pincode) {
+                        document.getElementById('regPincode').value = addressData.pincode;
+                    }
+
+                    if (addressData.district && addressData.state) {
+                        details.textContent = `${addressData.district}, ${addressData.state}`;
+                        status.textContent = "Location Verified ✓";
+                        btn.classList.add('location-verified');
+                        showToast("Address detected successfully!", "success");
+                    } else {
+                        status.textContent = "Location Partially Detected";
+                        details.textContent = addressData.fullAddress || "Please complete missing location fields";
+                        showToast("State/District incomplete. Please fill manually.", "error");
+                        enableManualEntry();
+                    }
+                } else {
+                    showToast("Could not detect address. Enter manually.", "error");
+                    enableManualEntry();
+                }
+            } catch (err) {
+                console.error("Geolocation error:", err);
+                status.textContent = "Detection Failed";
+                showToast("Location access required", "error");
+                enableManualEntry();
+            }
+        }
+
+        function enableManualEntry() {
+            const districtInput = document.getElementById('regDistrict');
+            const stateInput = document.getElementById('regState');
+            districtInput.removeAttribute('readonly');
+            stateInput.removeAttribute('readonly');
+            districtInput.classList.remove('readonly-field', 'cursor-not-allowed');
+            stateInput.classList.remove('readonly-field', 'cursor-not-allowed');
+            
+            // Set default coordinates for manual entry (India center)
+            if (!currentLat) {
+                currentLat = 20.5937;
+                currentLng = 78.9629;
+            }
+        }
+
+        async function handleFinalRegister() {
+            const btn = document.getElementById('finishBtn');
+            const originalText = btn.textContent;
+            
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const flatNumber = document.getElementById('regFlat').value;
+            const streetName = document.getElementById('regStreet').value;
+            const district = document.getElementById('regDistrict').value;
+            const state = document.getElementById('regState').value;
+            const pincode = document.getElementById('regPincode').value;
+            const aadhaarNumber = document.getElementById('aadhaarNumber').value;
+            const fileInput = document.getElementById('addressProof');
+
+            // Check if all required fields are filled
+            if (!name || !email || !password || !flatNumber || !streetName || !district || !state || !pincode || !aadhaarNumber) {
+                return showToast("Please complete all fields", "error");
+            }
+
+            // If location wasn't auto-detected, use manually entered values
+            if (!currentLat || !currentLng) {
+                // Validate that location fields are filled
+                if (!flatNumber || !streetName || !district || !state || !pincode) {
+                    return showToast("Please fill all location fields", "error");
+                }
+            }
+
+            if (!fileInput.files[0]) {
+                return showToast("Please upload address proof", "error");
+            }
+
+            btn.textContent = 'Creating Account...';
+            btn.disabled = true;
+
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('email', email);
+            formData.append('password', password);
+            formData.append('flatNumber', flatNumber);
+            formData.append('streetName', streetName);
+            formData.append('district', district);
+            formData.append('state', state);
+            formData.append('pincode', pincode);
+            formData.append('aadhaarNumber', aadhaarNumber);
+            formData.append('aadhaarVerified', true);
+            formData.append('lat', currentLat);
+            formData.append('lng', currentLng);
+            formData.append('addressProof', fileInput.files[0]);
+
+            try {
+                const res = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await res.json();
+                if (res.ok) {
+                    setToken(result.token);
+                    showToast("Welcome to the Circle!", "success");
+                    setTimeout(() => window.location.href = 'index.html', 1500);
+                } else {
+                    showToast(result.message || "Registration failed", "error");
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                showToast("Server connection error", "error");
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

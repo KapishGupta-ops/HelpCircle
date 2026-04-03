@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        @apply bg-slate-50 text-slate-900 font-sans selection:bg-primary-100 selection:text-primary-900;
+    }
+}
+
+@layer components {
+    .card {
+        @apply bg-white rounded-4xl border border-white shadow-premium transition-all duration-300;
+    }
+    
+    .card-interactive {
+        @apply card hover:shadow-premium-hover hover:-translate-y-1 cursor-pointer active:scale-[0.98];
+    }
+
+    .input-field {
+        @apply w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all font-medium text-slate-800 placeholder:text-slate-400;
+    }
+
+    .btn-primary {
+        @apply bg-gradient-to-br from-primary-500 to-primary-600 text-white font-bold py-4 px-8 rounded-2xl hover:shadow-glow hover:scale-[1.02] transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100;
+    }
+
+    .btn-secondary {
+        @apply bg-white text-slate-700 border border-slate-200 font-bold py-4 px-8 rounded-2xl hover:bg-slate-50 hover:border-slate-300 transition-all active:scale-95;
+    }
+
+    .badge {
+        @apply px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider;
+    }
+
+    .badge-primary {
+        @apply badge bg-primary-50 text-primary-600 border border-primary-100;
+    }
+
+    .badge-secondary {
+        @apply badge bg-secondary-50 text-secondary-600 border border-secondary-100;
+    }
+
+    .badge-accent {
+        @apply badge bg-accent-50 text-accent-600 border border-accent-100;
+    }
+
+    .modal-overlay {
+        @apply fixed inset-0 bg-slate-900/40 backdrop-blur-md z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 transition-all duration-300;
+    }
+
+    .modal-content {
+        @apply bg-white w-full max-w-lg rounded-t-5xl sm:rounded-5xl p-8 shadow-2xl animate-slide-up overflow-hidden;
+    }
+
+    .nav-link {
+        @apply px-4 py-2 rounded-xl text-slate-500 font-bold transition-all hover:bg-slate-50 hover:text-primary-600 active:scale-95;
+    }
+
+    .nav-link-active {
+        @apply nav-link bg-primary-50 text-primary-600;
+    }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    @apply bg-slate-50;
+}
+::-webkit-scrollbar-thumb {
+    @apply bg-slate-300 rounded-full hover:bg-slate-400 transition-colors;
+}
+
+/* Glassmorphism utility */
+.glass {
+    @apply bg-white/70 backdrop-blur-xl border border-white/40;
+}

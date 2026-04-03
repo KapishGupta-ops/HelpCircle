@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <title>My Profile - HelpCircle</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background:
+                radial-gradient(circle at 14% 8%, rgba(255, 107, 53, 0.12), transparent 28%),
+                radial-gradient(circle at 88% 18%, rgba(0, 78, 137, 0.12), transparent 24%),
+                var(--color-bg);
+        }
+
+        .profile-overview {
+            background: linear-gradient(165deg, color-mix(in srgb, var(--color-bg-elevated) 95%, white 5%), color-mix(in srgb, var(--color-bg-secondary) 82%, transparent));
+            border: 1px solid var(--color-border);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .profile-stat {
+            background: color-mix(in srgb, var(--color-bg-secondary) 84%, transparent);
+            border: 1px solid color-mix(in srgb, var(--color-border) 92%, transparent);
+            border-radius: 1.75rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .profile-stat:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .activity-tabs {
+            background: color-mix(in srgb, var(--color-bg-elevated) 95%, white 5%);
+            border: 1px solid var(--color-border);
+            border-radius: 1.35rem;
+            padding: 0.4rem;
+        }
+
+        .activity-tab {
+            border-radius: 1rem;
+            font-size: 0.78rem;
+            letter-spacing: 0.08em;
+            font-weight: 800;
+            color: var(--color-text-secondary);
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .activity-tab.active {
+            background: linear-gradient(145deg, var(--color-primary), var(--color-primary-dark));
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 10px 22px rgba(229, 90, 37, 0.32);
+        }
+
+        .activity-tab:not(.active):hover {
+            background: color-mix(in srgb, var(--color-bg-secondary) 88%, transparent);
+            color: var(--color-text-primary);
+            border-color: var(--color-border);
+        }
+
+        .activity-card {
+            border: 1px solid var(--color-border);
+            background: linear-gradient(180deg, color-mix(in srgb, var(--color-bg-elevated) 95%, white 5%), var(--color-bg-elevated));
+            box-shadow: var(--shadow-lg);
+            border-radius: 1.6rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .activity-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-xl);
+            border-color: color-mix(in srgb, var(--color-primary) 35%, var(--color-border));
+        }
+
+        .request-title {
+            color: var(--color-text-primary);
+            line-height: 1.3;
+            letter-spacing: -0.01em;
+        }
+
+        .request-description {
+            color: var(--color-text-secondary);
+            line-height: 1.65;
+            min-height: 3.2em;
+        }
+
+        .request-footer {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid color-mix(in srgb, var(--color-border) 85%, transparent);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .request-count {
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: var(--color-text-tertiary);
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+        }
+
+        .request-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-left: auto;
+        }
+
+        .request-action-btn {
+            min-width: 108px;
+            padding: 0.62rem 0.95rem;
+            border-radius: 0.9rem;
+            border: 1px solid transparent;
+            font-size: 0.68rem;
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: all 0.2s ease;
+        }
+
+        .request-action-btn.manage {
+            background: color-mix(in srgb, var(--color-bg-secondary) 92%, transparent);
+            color: var(--color-text-secondary);
+            border-color: var(--color-border);
+        }
+
+        .request-action-btn.manage:hover {
+            background: linear-gradient(145deg, var(--color-primary), var(--color-primary-dark));
+            color: #fff;
+            border-color: transparent;
+        }
+
+        .request-action-btn.delete {
+            background: color-mix(in srgb, #fee2e2 72%, var(--color-bg-elevated));
+            color: #dc2626;
+            border-color: rgba(220, 38, 38, 0.22);
+        }
+
+        .request-action-btn.delete:hover {
+            background: linear-gradient(145deg, #ef4444, #dc2626);
+            color: #fff;
+            border-color: transparent;
+        }
+
+        @media (max-width: 560px) {
+            .request-actions {
+                width: 100%;
+                margin-left: 0;
+            }
+
+            .request-action-btn {
+                flex: 1;
+                min-width: 0;
+            }
+        }
+
+        .offers-modal {
+            border-radius: 1.75rem;
+            background: linear-gradient(170deg, color-mix(in srgb, var(--color-bg-elevated) 96%, white 4%), var(--color-bg-elevated));
+            border: 1px solid var(--color-border);
+        }
+
+        .offer-row {
+            background: color-mix(in srgb, var(--color-bg-secondary) 90%, transparent);
+            border: 1px solid var(--color-border);
+            border-radius: 1.25rem;
+        }
+
+        .offer-name {
+            color: var(--color-text-primary);
+        }
+
+        .offer-message {
+            color: var(--color-text-secondary);
+        }
+
+        .offer-accepted {
+            background: rgba(16, 185, 129, 0.15);
+            color: #059669;
+            border: 1px solid rgba(16, 185, 129, 0.28);
+        }
+
+        .streak-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 999px;
+            border: 1px solid color-mix(in srgb, #f59e0b 35%, var(--color-border));
+            background: color-mix(in srgb, #f59e0b 16%, var(--color-bg-elevated));
+            padding: 8px 14px;
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #d97706;
+            margin: 10px auto 0;
+        }
+
+        .badge-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 12px;
+        }
+
+        .profile-badge-chip {
+            border-radius: 999px;
+            border: 1px solid var(--color-border);
+            background: color-mix(in srgb, var(--color-bg-secondary) 88%, transparent);
+            color: var(--color-text-secondary);
+            padding: 6px 12px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .impact-card {
+            margin-bottom: 18px;
+            border: 1px solid var(--color-border);
+            background: linear-gradient(155deg, color-mix(in srgb, var(--color-secondary) 14%, var(--color-bg-elevated)), var(--color-bg-elevated));
+            border-radius: 1.25rem;
+            box-shadow: var(--shadow-lg);
+            padding: 16px;
+        }
+
+        .wallet-card {
+            margin-bottom: 18px;
+            border: 1px solid var(--color-border);
+            background: linear-gradient(150deg, color-mix(in srgb, #10b981 12%, var(--color-bg-elevated)), var(--color-bg-elevated));
+            border-radius: 1.25rem;
+            box-shadow: var(--shadow-lg);
+            padding: 16px;
+        }
+
+        .wallet-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .wallet-stat {
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 10px;
+            background: color-mix(in srgb, var(--color-bg-secondary) 88%, transparent);
+        }
+
+        .wallet-value {
+            font-size: 1.02rem;
+            font-weight: 900;
+            color: var(--color-text-primary);
+        }
+
+        .wallet-label {
+            margin-top: 2px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-text-tertiary);
+        }
+
+        .wallet-topup-row {
+            margin-top: 12px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 10px;
+        }
+
+        .wallet-preset-row {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .wallet-preset-btn {
+            border-radius: 999px;
+            border: 1px solid var(--color-border);
+            background: color-mix(in srgb, var(--color-bg-secondary) 90%, transparent);
+            color: var(--color-text-secondary);
+            padding: 6px 12px;
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            transition: all 0.15s ease;
+        }
+
+        .wallet-preset-btn:hover {
+            border-color: color-mix(in srgb, var(--color-primary) 45%, var(--color-border));
+            color: var(--color-text-primary);
+        }
+
+        .wallet-history-list {
+            margin-top: 12px;
+            max-height: 240px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .wallet-history-item {
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 10px;
+            background: color-mix(in srgb, var(--color-bg-secondary) 88%, transparent);
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .wallet-history-type {
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-text-tertiary);
+        }
+
+        .wallet-history-note {
+            margin-top: 3px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--color-text-secondary);
+        }
+
+        .wallet-history-meta {
+            margin-top: 4px;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--color-text-tertiary);
+        }
+
+        .wallet-history-amount {
+            font-size: 12px;
+            font-weight: 900;
+        }
+
+        .wallet-history-amount.credit {
+            color: #059669;
+        }
+
+        .wallet-history-amount.debit {
+            color: #dc2626;
+        }
+
+        .pref-card {
+            margin-bottom: 18px;
+            border: 1px solid var(--color-border);
+            background: linear-gradient(150deg, color-mix(in srgb, var(--color-success) 10%, var(--color-bg-elevated)), var(--color-bg-elevated));
+            border-radius: 1.25rem;
+            box-shadow: var(--shadow-md);
+            padding: 16px;
+        }
+
+        .pref-title {
+            font-size: 0.73rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-text-tertiary);
+        }
+
+        .availability-card {
+            margin-bottom: 18px;
+            border: 1px solid var(--color-border);
+            background: linear-gradient(150deg, color-mix(in srgb, var(--color-primary) 10%, var(--color-bg-elevated)), var(--color-bg-elevated));
+            border-radius: 1.25rem;
+            box-shadow: var(--shadow-md);
+            padding: 16px;
+        }
+
+        .availability-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .availability-item {
+            border: 1px solid var(--color-border);
+            background: color-mix(in srgb, var(--color-bg-secondary) 90%, transparent);
+            border-radius: 12px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .availability-day {
+            font-size: 11px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-text-primary);
+        }
+
+        .availability-time {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--color-text-secondary);
+        }
+
+        .day-btn {
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid var(--color-border);
+            background: var(--color-bg-secondary);
+            font-size: 12px;
+            font-weight: 900;
+            color: var(--color-text-secondary);
+            transition: all 0.2s ease;
+        }
+
+        .day-btn.selected {
+            background: var(--color-primary);
+            color: white;
+            border-color: transparent;
+        }
+
+        .pref-grid {
+            margin-top: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .pref-weight-grid {
+            margin-top: 14px;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .pref-weight-item {
+            border: 1px solid var(--color-border);
+            background: color-mix(in srgb, var(--color-bg-secondary) 90%, transparent);
+            border-radius: 12px;
+            padding: 10px;
+        }
+
+        .pref-weight-label-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .pref-weight-label {
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--color-text-tertiary);
+        }
+
+        .pref-weight-value {
+            font-size: 10px;
+            font-weight: 900;
+            color: var(--color-primary);
+        }
+
+        .pref-weight-slider {
+            width: 100%;
+            accent-color: var(--color-primary);
+        }
+
+        .pref-chip {
+            border-radius: 999px;
+            border: 1px solid var(--color-border);
+            background: color-mix(in srgb, var(--color-bg-secondary) 90%, transparent);
+            color: var(--color-text-secondary);
+            padding: 7px 12px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            transition: all 0.16s ease;
+        }
+
+        .pref-chip:hover {
+            transform: translateY(-1px);
+            border-color: color-mix(in srgb, var(--color-primary) 45%, var(--color-border));
+            color: var(--color-text-primary);
+        }
+
+        .pref-chip.selected {
+            border-color: rgba(16, 185, 129, 0.42);
+            background: rgba(16, 185, 129, 0.16);
+            color: #047857;
+        }
+
+        html.dark .pref-chip.selected {
+            color: #6ee7b7;
+            border-color: rgba(110, 231, 183, 0.4);
+            background: rgba(16, 185, 129, 0.24);
+        }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .impact-stat {
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 10px;
+            background: color-mix(in srgb, var(--color-bg-secondary) 88%, transparent);
+        }
+
+        .impact-value {
+            font-size: 1.05rem;
+            font-weight: 900;
+            color: var(--color-text-primary);
+        }
+
+        .impact-label {
+            margin-top: 2px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-text-tertiary);
+        }
+
+        @media (max-width: 580px) {
+            .impact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pref-weight-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .wallet-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .wallet-topup-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .rating-stars {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .rating-star {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            border: 1px solid var(--color-border);
+            background: var(--color-bg-secondary);
+            color: var(--color-text-tertiary);
+            font-size: 22px;
+            line-height: 1;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .rating-star.active,
+        .rating-star:hover {
+            color: #f59e0b;
+            border-color: rgba(245, 158, 11, 0.4);
+            background: rgba(245, 158, 11, 0.14);
+            transform: translateY(-1px);
+        }
+
+        html.dark .offer-accepted {
+            background: rgba(16, 185, 129, 0.2);
+            color: #6ee7b7;
+            border-color: rgba(16, 185, 129, 0.34);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 pb-12 transition-colors duration-300">
+    <!-- Navbar -->
+    <nav class="glass sticky top-0 z-50 px-4 py-4 border-b border-slate-200/50 dark:border-slate-800/50">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="p-2.5 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-400 hover:text-orange-600 rounded-2xl border border-slate-100 dark:border-slate-700 transition-all active:scale-90">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                </a>
+                <h1 class="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">My Profile</h1>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-1 bg-slate-100/50 dark:bg-slate-800/50 p-1 rounded-2xl border border-slate-200/50 dark:border-slate-700/50">
+                <a href="index.html" class="px-4 py-2 rounded-xl text-sm font-bold transition-all text-slate-500 dark:text-slate-400 hover:text-primary-600">Explore</a>
+                <a href="groups.html" class="px-4 py-2 rounded-xl text-sm font-bold transition-all text-slate-500 dark:text-slate-400 hover:text-primary-600">Groups</a>
+                <a href="leaderboard.html" class="px-4 py-2 rounded-xl text-sm font-bold transition-all text-slate-500 dark:text-slate-400 hover:text-primary-600">Leaderboard</a>
+                <a href="profile.html" class="px-4 py-2 rounded-xl text-sm font-bold transition-all bg-white dark:bg-slate-700 text-primary-600 shadow-sm">Profile</a>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="notification-wrap">
+                    <button id="notificationBtn" class="notification-btn" title="Notifications">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                        <span id="notificationBadge" class="notification-badge hidden">0</span>
+                    </button>
+                    <div id="notificationPanel" class="notification-panel hidden">
+                        <div class="notification-panel-header">
+                            <h4>Notifications</h4>
+                            <button id="notificationMarkAll" class="notification-mark-all">Mark all read</button>
+                        </div>
+                        <div id="notificationList" class="notification-list"></div>
+                    </div>
+                </div>
+                <button id="themeToggle" class="theme-toggle" title="Toggle dark mode">
+                    <svg class="theme-toggle-icon sun" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1m-16 0H1m15.364 1.636l.707.707M6.343 6.343l-.707-.707m12.728 0l-.707.707m-12.02 12.02l-.707-.707M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <svg class="theme-toggle-icon moon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+                <button onclick="logout()" class="text-xs font-bold text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 border border-transparent hover:border-red-100 dark:hover:border-red-900/50 px-5 py-2.5 rounded-xl transition-all uppercase tracking-widest">Logout</button>
+            </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-4 mt-10">
+        <section id="impactSummaryCard" class="impact-card">
+            <div class="flex items-center justify-between">
+                <h3 class="text-sm font-extrabold uppercase tracking-widest text-slate-500 dark:text-slate-400">Last 7 Days Impact</h3>
+                <span id="impactRatingMini" class="text-xs font-black text-amber-500 dark:text-amber-400">⭐ 0.0 (0)</span>
+            </div>
+            <div class="impact-grid">
+                <div class="impact-stat">
+                    <div id="impactHelped" class="impact-value">0</div>
+                    <div class="impact-label">Helps Completed</div>
+                </div>
+                <div class="impact-stat">
+                    <div id="impactClosed" class="impact-value">0</div>
+                    <div class="impact-label">Requests Closed</div>
+                </div>
+                <div class="impact-stat">
+                    <div id="impactBadges" class="impact-value">0</div>
+                    <div class="impact-label">Badges Unlocked</div>
+                </div>
+                <div class="impact-stat">
+                    <div id="impactStreak" class="impact-value">0</div>
+                    <div class="impact-label">Current Help Streak</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="wallet-card">
+            <div class="flex items-center justify-between gap-3">
+                <div>
+                    <h3 class="pref-title">Demo Wallet</h3>
+                    <p class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-1">Top up balance to fund requests. Escrow locks when you accept a helper.</p>
+                </div>
+            </div>
+            <div class="wallet-grid">
+                <div class="wallet-stat">
+                    <div id="walletAvailable" class="wallet-value">₹0.00</div>
+                    <div class="wallet-label">Available</div>
+                </div>
+                <div class="wallet-stat">
+                    <div id="walletLocked" class="wallet-value">₹0.00</div>
+                    <div class="wallet-label">Locked In Escrow</div>
+                </div>
+                <div class="wallet-stat">
+                    <div id="walletTotal" class="wallet-value">₹0.00</div>
+                    <div class="wallet-label">Total Wallet</div>
+                </div>
+            </div>
+            <div class="wallet-topup-row">
+                <input type="number" id="walletTopupAmount" class="input-field" min="1" step="1" placeholder="Enter top-up amount (INR)">
+                <button onclick="handleTopUpWallet()" class="request-action-btn manage">Add Balance</button>
+            </div>
+            <div class="wallet-preset-row">
+                <button class="wallet-preset-btn" onclick="setTopUpAmount(100)">+₹100</button>
+                <button class="wallet-preset-btn" onclick="setTopUpAmount(500)">+₹500</button>
+                <button class="wallet-preset-btn" onclick="setTopUpAmount(1000)">+₹1000</button>
+                <button class="wallet-preset-btn" onclick="setTopUpAmount(2000)">+₹2000</button>
+            </div>
+            <div id="walletHistoryList" class="wallet-history-list">
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center py-4">No wallet transactions yet</p>
+            </div>
+        </section>
+
+        <!-- Availability Calendar -->
+        <section class="availability-card mb-10">
+            <div class="flex items-center justify-between mb-2">
+                <h3 class="pref-title">Help Availability</h3>
+                <button id="editAvailabilityBtn" class="text-[10px] font-black uppercase text-primary-600 tracking-widest hover:underline">Update</button>
+            </div>
+            <p class="text-[11px] font-medium text-slate-500 dark:text-slate-400 mb-4">Let neighbors know when you're around to lend a hand.</p>
+            <div id="availabilityList" class="availability-grid">
+                <!-- Loaded dynamically -->
+                <p class="col-span-full text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center py-4">No availability set</p>
+            </div>
+        </section>
+
+        <section class="pref-card">
+            <div class="flex items-center justify-between gap-3">
+                <div>
+                    <h3 class="pref-title">Needs Your Skills Preferences</h3>
+                    <p class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-1">Pick categories you prefer to help with. Recommendations will prioritize these.</p>
+                </div>
+                <button id="savePreferencesBtn" class="request-action-btn manage">Save</button>
+            </div>
+            <div id="prefChipGrid" class="pref-grid"></div>
+            <div id="prefWeightGrid" class="pref-weight-grid"></div>
+        </section>
+
+        <!-- Profile Overview Card -->
+        <div class="card profile-overview p-10 mb-10 text-center relative overflow-hidden animate-fade-in">
+            <!-- Background Accent -->
+            <div class="absolute top-0 right-0 w-32 h-32 bg-primary-50 dark:bg-primary-900/20 rounded-bl-full -z-10 opacity-50"></div>
+            
+            <div class="relative inline-block mb-6">
+                <div class="w-28 h-28 bg-gradient-to-br from-primary-500 to-primary-600 text-white rounded-4xl flex items-center justify-center text-4xl font-black shadow-2xl shadow-primary-200 dark:shadow-none border-4 border-white dark:border-slate-800" id="profInitial">?</div>
+                <div class="absolute -bottom-1 -right-1 w-8 h-8 bg-green-500 border-4 border-white dark:border-slate-800 rounded-2xl shadow-sm"></div>
+            </div>
+
+            <h2 class="text-3xl font-extrabold tracking-tight mb-1" id="profName">Loading...</h2>
+            <div class="flex items-center justify-center gap-2 mb-10">
+                <span class="text-slate-400 dark:text-slate-500 font-bold text-sm" id="profEmail">...</span>
+                <span class="text-slate-200 dark:text-slate-800">•</span>
+                <span id="profDistrict" class="text-primary-600 dark:text-primary-400 font-extrabold text-xs uppercase tracking-widest">...</span>
+                <span class="text-slate-200 dark:text-slate-800">•</span>
+                <span id="profRating" class="text-amber-500 dark:text-amber-400 font-extrabold text-xs uppercase tracking-widest">⭐ 0.0 (0)</span>
+                <span class="text-slate-200 dark:text-slate-800">•</span>
+                <span id="profTrust" class="text-emerald-600 dark:text-emerald-400 font-extrabold text-xs uppercase tracking-widest">✔ 0% Complete</span>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
+                <div class="profile-stat p-8 group">
+                    <div class="text-4xl font-black text-primary-600 dark:text-primary-400 mb-2 group-hover:scale-110 transition-transform" id="profKarma">0</div>
+                    <div class="text-[10px] font-extrabold text-primary-700 dark:text-primary-300 uppercase tracking-[0.2em]">Total Karma</div>
+                </div>
+                <div class="profile-stat p-8 group">
+                    <div class="text-4xl font-black text-secondary-600 dark:text-secondary-400 mb-2 group-hover:scale-110 transition-transform" id="profHelped">0</div>
+                    <div class="text-[10px] font-extrabold text-secondary-700 dark:text-secondary-300 uppercase tracking-[0.2em]">Hands Lent</div>
+                </div>
+            </div>
+
+            <div id="profStreak" class="streak-pill">🔥 0 day help streak</div>
+            <div id="profBadges" class="badge-grid"></div>
+        </div>
+
+        <!-- Activity Tabs -->
+        <div class="activity-tabs flex gap-2 mb-8">
+            <button onclick="switchTab('my')" id="tab-my" class="activity-tab flex-1 py-4 uppercase active">My Requests</button>
+            <button onclick="switchTab('helped')" id="tab-helped" class="activity-tab flex-1 py-4 uppercase">Helping Others</button>
+        </div>
+
+        <!-- Content List -->
+        <div id="activityList" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Loading -->
+            <div class="animate-pulse card h-48"></div>
+            <div class="animate-pulse card h-48"></div>
+        </div>
+    </main>
+
+    <!-- Modal for Offers (only for request owners) -->
+    <div id="offersModal" class="modal-overlay hidden">
+        <div class="modal-content offers-modal !max-w-2xl">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h3 class="text-2xl font-extrabold text-slate-900 dark:text-slate-100">Incoming Help</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Accept an offer to coordinate further</p>
+                    <p id="offersWalletHint" class="text-[10px] font-black uppercase tracking-widest text-emerald-600 mt-2">Wallet balance: ₹0.00</p>
+                </div>
+                <button onclick="closeOffersModal()" class="p-2 bg-slate-100 text-slate-400 hover:text-slate-600 rounded-xl transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div id="offersList" class="space-y-4 max-h-[60vh] overflow-y-auto pr-2 no-scrollbar">
+                <!-- Offers will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Availability Modal -->
+    <div id="availabilityModal" class="modal-overlay hidden">
+        <div class="modal-content !max-w-md">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h3 class="text-2xl font-extrabold">Set Availability</h3>
+                    <p class="text-sm font-medium">When are you free to help?</p>
+                </div>
+                <button onclick="closeAvailabilityModal()" class="p-2 btn-secondary rounded-xl transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div id="availabilityForm" class="space-y-4">
+                <div class="grid grid-cols-7 gap-2 mb-4">
+                    <button class="day-btn" data-day="Monday">M</button>
+                    <button class="day-btn" data-day="Tuesday">T</button>
+                    <button class="day-btn" data-day="Wednesday">W</button>
+                    <button class="day-btn" data-day="Thursday">T</button>
+                    <button class="day-btn" data-day="Friday">F</button>
+                    <button class="day-btn" data-day="Saturday">S</button>
+                    <button class="day-btn" data-day="Sunday">S</button>
+                </div>
+                <div class="flex gap-4">
+                    <div class="flex-1">
+                        <label class="block text-[10px] font-bold uppercase tracking-widest mb-2 opacity-60">Start Time</label>
+                        <input type="time" id="availStart" class="input-field" value="09:00">
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-[10px] font-bold uppercase tracking-widest mb-2 opacity-60">End Time</label>
+                        <input type="time" id="availEnd" class="input-field" value="17:00">
+                    </div>
+                </div>
+                <button onclick="saveAvailability()" class="btn-primary w-full py-4 mt-6">Save Availability</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="hidden"></div>
+
+    <div id="ratingModal" class="modal-overlay hidden">
+        <div class="modal-content offers-modal !max-w-md">
+            <div class="flex items-center justify-between mb-5">
+                <h3 id="ratingModalTitle" class="text-xl font-extrabold text-slate-900 dark:text-slate-100">Rate User</h3>
+                <button onclick="closeRatingModal()" class="p-2 bg-slate-100 text-slate-400 hover:text-slate-600 rounded-xl transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <p class="text-sm text-slate-500 dark:text-slate-400 text-center mb-5">How was your experience?</p>
+            <div id="ratingStars" class="rating-stars mb-4"></div>
+            <p id="ratingHint" class="text-center text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-6">Select a rating</p>
+            <div class="flex items-center gap-2">
+                <button onclick="closeRatingModal()" class="request-action-btn manage flex-1">Cancel</button>
+                <button id="ratingSubmitBtn" onclick="submitRatingFromModal()" class="request-action-btn delete flex-1" style="background: linear-gradient(145deg, #f59e0b, #d97706); color: #fff; border-color: transparent;">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/posts.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        let currentTab = 'my';
+        let userData = null;
+        let ratingTargetPostId = null;
+        let selectedRatingValue = 0;
+        const HELP_CATEGORIES = ['Notes', 'Charger', 'Bike Repair', 'Groceries', 'Ride', 'Medical', 'Other'];
+        const WEIGHT_FIELDS = [
+            { key: 'distance', label: 'Near Me' },
+            { key: 'urgency', label: 'Urgent First' },
+            { key: 'familiarity', label: 'Past Category Match' },
+            { key: 'preference', label: 'Chosen Categories' },
+            { key: 'trust', label: 'Requester Reliability' },
+        ];
+        let currentWalletSummary = { availableBalance: 0, lockedBalance: 0, totalBalance: 0 };
+
+        function formatInr(value) {
+            return `₹${Number(value || 0).toFixed(2)}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            userData = await getMe();
+            if (!userData) return;
+
+            // Fill basic info
+            document.getElementById('profInitial').textContent = userData.name[0].toUpperCase();
+            document.getElementById('profName').textContent = userData.name;
+            document.getElementById('profEmail').textContent = userData.email;
+            document.getElementById('profDistrict').textContent = userData.district || 'Neighbor';
+            document.getElementById('profKarma').textContent = userData.karma;
+            document.getElementById('profRating').textContent = `⭐ ${Number(userData.ratingAverage || 0).toFixed(1)} (${userData.ratingCount || 0})`;
+            const requestCount = Number(userData.totalRequestsCreated || 0);
+            const closedCount = Number(userData.totalRequestsClosed || 0);
+            const completionPct = requestCount > 0 ? Math.round((closedCount / requestCount) * 100) : 0;
+            document.getElementById('profTrust').textContent = `✔ ${completionPct}% Complete`;
+            document.getElementById('profStreak').textContent = `🔥 ${Number(userData.helpStreakDays || 0)} day help streak`;
+            renderProfileBadges(userData.badges || []);
+            renderPreferenceChips(userData.preferredHelpCategories || []);
+            renderPreferenceWeights(userData.recommendationWeights || {});
+            renderAvailability(userData.availability || []);
+            await loadWalletSection();
+
+            const impact = await getImpactSummary();
+            renderImpactSummary(impact);
+
+            const saveBtn = document.getElementById('savePreferencesBtn');
+            if (saveBtn) {
+                saveBtn.onclick = savePreferences;
+            }
+
+            const editAvailBtn = document.getElementById('editAvailabilityBtn');
+            if (editAvailBtn) {
+                editAvailBtn.onclick = openAvailabilityModal;
+            }
+
+            // Day buttons in availability modal
+            document.querySelectorAll('.day-btn').forEach(btn => {
+                btn.onclick = () => btn.classList.toggle('selected');
+            });
+            
+            loadActivity();
+        });
+
+        async function loadWalletSection() {
+            const summary = await getWalletSummary();
+            const txPayload = await getWalletTransactions(40);
+
+            if (summary) {
+                currentWalletSummary = summary;
+                document.getElementById('walletAvailable').textContent = formatInr(summary.availableBalance);
+                document.getElementById('walletLocked').textContent = formatInr(summary.lockedBalance);
+                document.getElementById('walletTotal').textContent = formatInr(summary.totalBalance);
+            }
+
+            renderWalletTransactions(txPayload && Array.isArray(txPayload.transactions) ? txPayload.transactions : []);
+        }
+
+        function setTopUpAmount(amount) {
+            const input = document.getElementById('walletTopupAmount');
+            if (!input) return;
+            input.value = amount;
+        }
+
+        async function handleTopUpWallet() {
+            const input = document.getElementById('walletTopupAmount');
+            if (!input) return;
+
+            const amount = Number(input.value || 0);
+            if (!Number.isFinite(amount) || amount <= 0) {
+                showToast('Enter a valid amount to top up', 'error');
+                return;
+            }
+
+            const result = await topUpWallet(amount);
+            if (!result) return;
+
+            input.value = '';
+            await loadWalletSection();
+        }
+
+        function renderWalletTransactions(transactions) {
+            const list = document.getElementById('walletHistoryList');
+            if (!list) return;
+
+            if (!transactions || transactions.length === 0) {
+                list.innerHTML = '<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center py-4">No wallet transactions yet</p>';
+                return;
+            }
+
+            const typeLabel = {
+                topup: 'Top Up',
+                escrow_lock: 'Escrow Locked',
+                escrow_release: 'Escrow Release',
+                escrow_refund: 'Escrow Refund',
+            };
+
+            list.innerHTML = transactions.map((tx) => {
+                const isCredit = tx.type === 'topup' || (tx.type === 'escrow_release' && tx.note && tx.note.toLowerCase().includes('received')) || tx.type === 'escrow_refund';
+                const sign = isCredit ? '+' : '-';
+                const amountClass = isCredit ? 'credit' : 'debit';
+                const postTitle = tx.post && tx.post.title ? tx.post.title : '';
+                return `
+                    <div class="wallet-history-item">
+                        <div>
+                            <div class="wallet-history-type">${typeLabel[tx.type] || tx.type}</div>
+                            <div class="wallet-history-note">${tx.note || 'Wallet update'}${postTitle ? ` • ${postTitle}` : ''}</div>
+                            <div class="wallet-history-meta">${new Date(tx.createdAt).toLocaleString()}</div>
+                        </div>
+                        <div class="wallet-history-amount ${amountClass}">${sign}${formatInr(tx.amount)}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderAvailability(availability) {
+            const list = document.getElementById('availabilityList');
+            if (!list) return;
+
+            if (!availability || availability.length === 0) {
+                list.innerHTML = '<p class="col-span-full text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center py-4">No availability set</p>';
+                return;
+            }
+
+            list.innerHTML = availability.map(slot => `
+                <div class="availability-item">
+                    <span class="availability-day">${slot.day}</span>
+                    <span class="availability-time">${slot.startTime} - ${slot.endTime}</span>
+                </div>
+            `).join('');
+        }
+
+        function openAvailabilityModal() {
+            document.getElementById('availabilityModal').classList.remove('hidden');
+            // Pre-select days from current availability
+            document.querySelectorAll('.day-btn').forEach(btn => {
+                const day = btn.getAttribute('data-day');
+                const isSelected = userData.availability?.some(a => a.day === day);
+                btn.classList.toggle('selected', isSelected);
+            });
+        }
+
+        function closeAvailabilityModal() {
+            document.getElementById('availabilityModal').classList.add('hidden');
+        }
+
+        async function saveAvailability() {
+            const selectedDays = Array.from(document.querySelectorAll('.day-btn.selected'))
+                .map(btn => btn.getAttribute('data-day'));
+            
+            const startTime = document.getElementById('availStart').value;
+            const endTime = document.getElementById('availEnd').value;
+
+            if (selectedDays.length === 0) {
+                showToast('Select at least one day', 'error');
+                return;
+            }
+
+            const availability = selectedDays.map(day => ({
+                day,
+                startTime,
+                endTime
+            }));
+
+            if (await updateAvailability(availability)) {
+                userData.availability = availability;
+                renderAvailability(availability);
+                closeAvailabilityModal();
+            }
+        }
+
+        function renderPreferenceChips(selectedCategories) {
+            const grid = document.getElementById('prefChipGrid');
+            if (!grid) return;
+
+            const selectedSet = new Set(Array.isArray(selectedCategories) ? selectedCategories : []);
+
+            grid.innerHTML = HELP_CATEGORIES.map((category) => {
+                const selectedClass = selectedSet.has(category) ? 'selected' : '';
+                return `<button type="button" class="pref-chip ${selectedClass}" data-category="${category}" onclick="togglePreferenceChip(this)">${category}</button>`;
+            }).join('');
+        }
+
+        function togglePreferenceChip(buttonEl) {
+            if (!buttonEl) return;
+            buttonEl.classList.toggle('selected');
+        }
+
+        function renderPreferenceWeights(weights) {
+            const grid = document.getElementById('prefWeightGrid');
+            if (!grid) return;
+
+            const safeWeights = {
+                distance: Number(weights.distance || 1),
+                urgency: Number(weights.urgency || 1),
+                familiarity: Number(weights.familiarity || 1),
+                preference: Number(weights.preference || 1),
+                trust: Number(weights.trust || 1),
+            };
+
+            grid.innerHTML = WEIGHT_FIELDS.map((field) => {
+                const value = Math.max(0.5, Math.min(2, Number(safeWeights[field.key] || 1)));
+                return `
+                    <div class="pref-weight-item">
+                        <div class="pref-weight-label-row">
+                            <span class="pref-weight-label">${field.label}</span>
+                            <span class="pref-weight-value" id="prefWeightValue_${field.key}">${value.toFixed(1)}x</span>
+                        </div>
+                        <input
+                            type="range"
+                            min="0.5"
+                            max="2"
+                            step="0.1"
+                            value="${value.toFixed(1)}"
+                            class="pref-weight-slider"
+                            data-weight-key="${field.key}"
+                            oninput="updateWeightLabel(this)"
+                        />
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateWeightLabel(inputEl) {
+            if (!inputEl) return;
+            const key = inputEl.getAttribute('data-weight-key');
+            const valueEl = document.getElementById(`prefWeightValue_${key}`);
+            if (!valueEl) return;
+            valueEl.textContent = `${Number(inputEl.value).toFixed(1)}x`;
+        }
+
+        function readWeightSettingsFromUI() {
+            const sliders = Array.from(document.querySelectorAll('#prefWeightGrid .pref-weight-slider'));
+            const weights = {};
+
+            sliders.forEach((slider) => {
+                const key = slider.getAttribute('data-weight-key');
+                if (!key) return;
+                const raw = Number(slider.value);
+                weights[key] = Math.max(0.5, Math.min(2, Number(raw.toFixed(1))));
+            });
+
+            return weights;
+        }
+
+        async function savePreferences() {
+            const chips = Array.from(document.querySelectorAll('#prefChipGrid .pref-chip.selected'));
+            const selected = chips.map((chip) => chip.getAttribute('data-category')).filter(Boolean);
+            const weights = readWeightSettingsFromUI();
+            const result = await updatePreferences(selected, weights);
+            if (!result) return;
+
+            userData.preferredHelpCategories = result.preferredHelpCategories || selected;
+            userData.recommendationWeights = result.recommendationWeights || weights;
+            localStorage.setItem('hc_pref_updated_at', String(Date.now()));
+            window.dispatchEvent(new CustomEvent('hc:preferences-updated'));
+            window.dispatchEvent(new CustomEvent('hc:activity-updated'));
+        }
+
+        function renderImpactSummary(summary) {
+            if (!summary) return;
+
+            document.getElementById('impactHelped').textContent = Number(summary.helpedCompletedThisWeek || 0);
+            document.getElementById('impactClosed').textContent = Number(summary.requestsClosedThisWeek || 0);
+            document.getElementById('impactBadges').textContent = Number(summary.badgesUnlockedThisWeek || 0);
+            document.getElementById('impactStreak').textContent = `${Number(summary.helpStreakDays || 0)} days`;
+            document.getElementById('impactRatingMini').textContent = `⭐ ${Number(summary.ratingAverage || 0).toFixed(1)} (${Number(summary.ratingCount || 0)})`;
+        }
+
+        function renderProfileBadges(badges) {
+            const badgesEl = document.getElementById('profBadges');
+            if (!badgesEl) return;
+
+            if (!badges || badges.length === 0) {
+                badgesEl.innerHTML = '<span class="profile-badge-chip">No badges yet</span>';
+                return;
+            }
+
+            const labels = {
+                first_help: 'First Help',
+                five_helps: '5 Helps',
+                ten_helps: '10 Helps',
+                streak_3: '3-Day Streak',
+                first_request_closed: 'First Request Closed',
+                five_requests_closed: '5 Requests Closed',
+                fast_responder: 'Fast Responder',
+            };
+
+            badgesEl.innerHTML = badges.map((badgeKey) => {
+                return `<span class="profile-badge-chip">${labels[badgeKey] || badgeKey}</span>`;
+            }).join('');
+        }
+
+        async function refreshProfileCompletion() {
+            userData = await getMe();
+            if (!userData) return;
+            
+            const requestCount = Number(userData.totalRequestsCreated || 0);
+            const closedCount = Number(userData.totalRequestsClosed || 0);
+            const completionPct = requestCount > 0 ? Math.round((closedCount / requestCount) * 100) : 0;
+            document.getElementById('profTrust').textContent = `✔ ${completionPct}% Complete`;
+            document.getElementById('profKarma').textContent = userData.karma;
+            document.getElementById('profStreak').textContent = `🔥 ${Number(userData.helpStreakDays || 0)} day help streak`;
+            document.getElementById('profRating').textContent = `⭐ ${Number(userData.ratingAverage || 0).toFixed(1)} (${userData.ratingCount || 0})`;
+            renderProfileBadges(userData.badges || []);
+            await loadWalletSection();
+        }
+
+        async function loadActivity() {
+            const list = document.getElementById('activityList');
+            list.innerHTML = '<div class="col-span-full py-20 flex justify-center"><div class="animate-spin rounded-full h-10 w-10 border-4 border-primary-500 border-t-transparent"></div></div>';
+            
+            try {
+                const posts = await getMyPosts();
+                if (currentTab === 'my') {
+                    renderMyRequests(posts);
+                } else {
+                    const helpedPosts = await getHelpedPosts();
+                    renderHelpedPosts(helpedPosts);
+                }
+            } catch (err) {
+                list.innerHTML = '<p class="col-span-full text-center text-slate-400 font-bold py-10 uppercase tracking-widest">Failed to load activity</p>';
+            }
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            const myBtn = document.getElementById('tab-my');
+            const helpedBtn = document.getElementById('tab-helped');
+            
+            if (tab === 'my') {
+                myBtn.classList.add('active');
+                helpedBtn.classList.remove('active');
+            } else {
+                helpedBtn.classList.add('active');
+                myBtn.classList.remove('active');
+            }
+            loadActivity();
+        }
+
+        function renderMyRequests(posts) {
+            const list = document.getElementById('activityList');
+            if (posts.length === 0) {
+                list.innerHTML = '<div class="col-span-full card p-16 text-center"><p class="font-bold uppercase tracking-widest">No requests posted yet</p></div>';
+                return;
+            }
+
+            list.innerHTML = posts.map(post => `
+                <div class="card activity-card p-6 flex flex-col group border-l-4 cursor-pointer ${post.status === 'open' ? 'border-l-primary-500' : 'border-l-green-500'}" onclick="openTaskDetail('${post._id}')">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="badge ${post.status === 'open' ? 'badge-primary' : 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 border-green-100 dark:border-green-900/30'}">${post.status}</span>
+                        <span class="text-[10px] font-bold text-slate-300 dark:text-slate-600 uppercase tracking-widest">${new Date(post.createdAt).toLocaleDateString()}</span>
+                    </div>
+                    <h4 class="request-title text-xl font-extrabold mb-2">${post.title}</h4>
+                    <p class="request-description text-sm font-medium mb-6 line-clamp-2">${post.description}</p>
+                    <p class="text-[11px] font-bold text-sky-600 dark:text-sky-400 mb-4 uppercase tracking-wider">⏱ ${Number(userData.avgResponseMinutes || 0).toFixed(1)}m avg response</p>
+                    <p class="text-[10px] font-extrabold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 mb-4">Reward: ${post.price > 0 ? formatInr(post.price) : 'Free'} • Payment: ${post.paymentStatus || 'none'}</p>
+                    ${renderRequesterCompletionSection(post)}
+                    
+                    <div class="request-footer">
+                        <span class="request-count">${post.offers.length} Offers Received</span>
+                        <div class="request-actions">
+                            <button onclick="event.stopPropagation(); viewOffers('${post._id}')" class="request-action-btn manage">Manage</button>
+                            <button onclick="event.stopPropagation(); handleDeleteIssue('${post._id}')" class="request-action-btn delete">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderHelpedPosts(posts) {
+            const list = document.getElementById('activityList');
+            document.getElementById('profHelped').textContent = posts.length;
+            
+            if (posts.length === 0) {
+                list.innerHTML = '<div class="col-span-full card p-16 text-center"><p class="font-bold uppercase tracking-widest">You haven\'t helped anyone yet</p></div>';
+                return;
+            }
+
+            list.innerHTML = posts.map(post => `
+                <div class="card activity-card p-6 flex flex-col group border-l-4 border-l-secondary-500 cursor-pointer" onclick="openTaskDetail('${post._id}')">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="badge badge-secondary">Lent a hand</span>
+                        <span class="text-[10px] font-bold text-slate-300 dark:text-slate-600 uppercase tracking-widest">${new Date(post.createdAt).toLocaleDateString()}</span>
+                    </div>
+                    <h4 class="text-lg font-extrabold mb-2">${post.title}</h4>
+                    <p class="text-xs font-bold text-slate-400 dark:text-slate-500 mb-2 uppercase tracking-tight">For ${post.author.name}</p>
+                    <p class="text-[11px] font-bold text-amber-600 dark:text-amber-400 mb-6 uppercase tracking-wider">⭐ ${Number(post.author.ratingAverage || 0).toFixed(1)} (${post.author.ratingCount || 0})</p>
+                    <p class="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 mb-4 uppercase tracking-wider">✔ ${Number(post.author.totalRequestsCreated || 0) > 0 ? Math.round((Number(post.author.totalRequestsClosed || 0) / Number(post.author.totalRequestsCreated || 0)) * 100) : 0}% complete</p>
+                    ${renderHelperCompletionSection(post)}
+                    
+                    <div class="mt-auto pt-6 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                         <span class="badge ${post.status === 'open' ? 'badge-primary' : 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 border-green-100 dark:border-green-900/30'}">${post.status}</span>
+                        <div class="w-8 h-8 bg-secondary-50 dark:bg-secondary-900/20 text-secondary-600 dark:text-secondary-400 rounded-lg flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderRequesterCompletionSection(post) {
+            const acceptedOffer = post.offers.find(o => o.status === 'accepted');
+            if (!acceptedOffer) return '';
+
+            const completionStatus = acceptedOffer.completionStatus || 'in_progress';
+
+            if (completionStatus === 'marked_done') {
+                return `
+                    <div class="mb-5 p-4 rounded-2xl border border-amber-200 bg-amber-50/70 dark:bg-amber-900/20 dark:border-amber-800/50">
+                        <p class="text-xs font-extrabold uppercase tracking-widest text-amber-700 dark:text-amber-300 mb-3">Helper marked this request as done. Confirm?</p>
+                        <div class="flex gap-2">
+                            <button onclick="handleConfirmDone('${post._id}', '${acceptedOffer._id}', true)" class="px-4 py-2 bg-green-600 text-white text-[10px] font-black rounded-lg uppercase tracking-widest">Yes, Done</button>
+                            <button onclick="handleConfirmDone('${post._id}', '${acceptedOffer._id}', false)" class="px-4 py-2 bg-red-600 text-white text-[10px] font-black rounded-lg uppercase tracking-widest">Not Done</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (completionStatus === 'confirmed_done') {
+                if (!acceptedOffer.ratingByRequester) {
+                    return `
+                        <div class="mb-5 flex items-center justify-between gap-2">
+                            <div class="text-[10px] font-extrabold uppercase tracking-widest text-green-600 dark:text-green-400">Work confirmed done</div>
+                            <button onclick="handleRate('${post._id}')" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white text-[10px] font-black rounded-lg uppercase tracking-widest transition-all">Rate Helper</button>
+                        </div>
+                    `;
+                }
+
+                return `<div class="mb-5 text-[10px] font-extrabold uppercase tracking-widest text-green-600 dark:text-green-400">Work confirmed done • You rated ${acceptedOffer.ratingByRequester}/5</div>`;
+            }
+
+            if (completionStatus === 'rejected_done') {
+                return '<div class="mb-5 text-[10px] font-extrabold uppercase tracking-widest text-red-600 dark:text-red-400">Marked not done. Waiting for helper update</div>';
+            }
+
+            return '<div class="mb-5 text-[10px] font-extrabold uppercase tracking-widest text-slate-500">Work in progress</div>';
+        }
+
+        function renderHelperCompletionSection(post) {
+            const offer = post.helperOffer;
+            if (!offer) return '';
+
+            const completionStatus = offer.completionStatus || 'in_progress';
+
+            if (completionStatus === 'in_progress') {
+                return `
+                    <div class="mb-5">
+                        <button onclick="handleMarkDone('${post._id}', '${offer._id}')" class="px-4 py-2 bg-primary-600 text-white text-[10px] font-black rounded-lg uppercase tracking-widest">Mark Work Done</button>
+                    </div>
+                `;
+            }
+
+            if (completionStatus === 'marked_done') {
+                return '<div class="mb-5 text-[10px] font-extrabold uppercase tracking-widest text-amber-600 dark:text-amber-400">Waiting for requester confirmation</div>';
+            }
+
+            if (completionStatus === 'confirmed_done') {
+                if (!offer.ratingByHelper) {
+                    return `
+                        <div class="mb-5 flex items-center justify-between gap-2">
+                            <div class="text-[10px] font-extrabold uppercase tracking-widest text-green-600 dark:text-green-400">Work confirmed done</div>
+                            <button onclick="handleRate('${post._id}')" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white text-[10px] font-black rounded-lg uppercase tracking-widest transition-all">Rate Requester</button>
+                        </div>
+                    `;
+                }
+
+                return `<div class="mb-5 text-[10px] font-extrabold uppercase tracking-widest text-green-600 dark:text-green-400">Work confirmed done • You rated ${offer.ratingByHelper}/5</div>`;
+            }
+
+            return `
+                <div class="mb-5">
+                    <div class="text-[10px] font-extrabold uppercase tracking-widest text-red-600 dark:text-red-400 mb-2">Requester said not done</div>
+                    <button onclick="handleMarkDone('${post._id}', '${offer._id}')" class="px-4 py-2 bg-primary-600 text-white text-[10px] font-black rounded-lg uppercase tracking-widest">Mark Done Again</button>
+                </div>
+            `;
+        }
+
+        async function viewOffers(postId) {
+            const modal = document.getElementById('offersModal');
+            const list = document.getElementById('offersList');
+            modal.classList.remove('hidden');
+            list.innerHTML = '<div class="flex justify-center py-10"><div class="animate-spin rounded-full h-8 w-8 border-4 border-primary-500 border-t-transparent"></div></div>';
+            
+            const posts = await getMyPosts();
+            const post = posts.find(p => p._id === postId);
+
+            const wallet = await getWalletSummary();
+            if (wallet) {
+                currentWalletSummary = wallet;
+            }
+
+            const needed = Number(post && post.price ? post.price : 0);
+            const available = Number(currentWalletSummary.availableBalance || 0);
+            const hintEl = document.getElementById('offersWalletHint');
+            if (hintEl) {
+                if (needed > 0) {
+                    hintEl.textContent = `Wallet ${formatInr(available)} • Needed ${formatInr(needed)} to accept`;
+                    hintEl.className = `text-[10px] font-black uppercase tracking-widest mt-2 ${available >= needed ? 'text-emerald-600' : 'text-red-500'}`;
+                } else {
+                    hintEl.textContent = `Wallet ${formatInr(available)} • This request is free`;
+                    hintEl.className = 'text-[10px] font-black uppercase tracking-widest text-emerald-600 mt-2';
+                }
+            }
+            
+            if (!post || post.offers.length === 0) {
+                list.innerHTML = '<p class="text-center text-slate-400 dark:text-slate-500 font-bold py-10 uppercase tracking-widest">No offers yet</p>';
+                return;
+            }
+
+            list.innerHTML = post.offers.map(offer => `
+                <div class="offer-row p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 group transition-all">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-white dark:bg-slate-900 rounded-2xl flex items-center justify-center font-black text-primary-600 dark:text-primary-400 shadow-sm border border-slate-100 dark:border-slate-700">
+                            ${offer.user.name[0].toUpperCase()}
+                        </div>
+                        <div>
+                            <h5 class="offer-name font-extrabold">${offer.user.name}</h5>
+                            <p class="offer-message text-sm font-medium">${offer.message}</p>
+                        </div>
+                    </div>
+                    ${offer.status === 'pending' ? `
+                        <button onclick="handleAccept('${post._id}', '${offer._id}', ${Number(post.price || 0)})" class="px-6 py-3 bg-primary-600 text-white text-[10px] font-black rounded-xl hover:bg-primary-700 transition-all uppercase tracking-widest shadow-lg shadow-primary-100 dark:shadow-none" ${Number(post.price || 0) > 0 && Number(currentWalletSummary.availableBalance || 0) < Number(post.price || 0) ? 'disabled style="opacity:0.55;cursor:not-allowed;"' : ''}>Accept Help</button>
+                    ` : `
+                        <span class="offer-accepted px-6 py-3 text-[10px] font-black rounded-xl uppercase tracking-widest">Accepted</span>
+                    `}
+                </div>
+            `).join('');
+        }
+
+        function closeOffersModal() {
+            document.getElementById('offersModal').classList.add('hidden');
+        }
+
+        async function handleAccept(postId, offerId, price) {
+            const needed = Number(price || 0);
+            const available = Number(currentWalletSummary.availableBalance || 0);
+            if (needed > 0 && available < needed) {
+                showToast(`Insufficient wallet balance. Add ${formatInr(needed - available)} and retry.`, 'error');
+                return;
+            }
+
+            if (await acceptOffer(postId, offerId)) {
+                showToast("Help accepted! Karma awarded.", "success");
+                closeOffersModal();
+                await refreshProfileCompletion();
+                loadActivity();
+            }
+        }
+
+        async function handleMarkDone(postId, offerId) {
+            if (await markWorkDone(postId, offerId)) {
+                await refreshProfileCompletion();
+                loadActivity();
+            }
+        }
+
+        async function handleConfirmDone(postId, offerId, isDone) {
+            if (await confirmWorkDone(postId, offerId, isDone)) {
+                await refreshProfileCompletion();
+                loadActivity();
+            }
+        }
+
+        function handleRate(postId) {
+            ratingTargetPostId = postId;
+            selectedRatingValue = 0;
+            document.getElementById('ratingModal').classList.remove('hidden');
+            renderRatingStars(0);
+            document.getElementById('ratingHint').textContent = 'Select a rating';
+        }
+
+        function closeRatingModal() {
+            document.getElementById('ratingModal').classList.add('hidden');
+            ratingTargetPostId = null;
+            selectedRatingValue = 0;
+        }
+
+        function renderRatingStars(activeValue) {
+            const starsEl = document.getElementById('ratingStars');
+            starsEl.innerHTML = [1, 2, 3, 4, 5].map((value) => {
+                const active = value <= activeValue ? 'active' : '';
+                return `<button type="button" class="rating-star ${active}" onclick="selectRatingValue(${value})">★</button>`;
+            }).join('');
+        }
+
+        function selectRatingValue(value) {
+            selectedRatingValue = value;
+            renderRatingStars(value);
+            document.getElementById('ratingHint').textContent = `${value}/5 selected`;
+        }
+
+        async function submitRatingFromModal() {
+            if (!ratingTargetPostId) return;
+
+            if (!Number.isInteger(selectedRatingValue) || selectedRatingValue < 1 || selectedRatingValue > 5) {
+                showToast('Please choose a rating from 1 to 5', 'error');
+                return;
+            }
+
+            if (await rateUserForPost(ratingTargetPostId, selectedRatingValue)) {
+                await refreshProfileCompletion();
+                const impact = await getImpactSummary();
+                renderImpactSummary(impact);
+                closeRatingModal();
+                loadActivity();
+            }
+        }
+
+        async function handleDeleteIssue(postId) {
+            const ok = confirm('Delete this issue?\n\nThis action cannot be undone.');
+            if (!ok) return;
+
+            if (await deleteIssue(postId)) {
+                closeOffersModal();
+                await refreshProfileCompletion();
+                loadActivity();
+            }
+        }
+
+        function openTaskDetail(postId) {
+            window.location.href = `task-detail.html?id=${postId}`;
+        }
+    </script>
+</body>
+</html>
